@@ -5,7 +5,52 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProtocolEditor"
         mc:Ignorable="d"
-        Title="PEditor" Height="553.886" Width="480.105">
+        Title="PEditor" Height="553.886" Width="659.438" Closing="Window_Closing">
+    <Window.Resources>
+        <SolidColorBrush x:Key="ListBorder" Color="#828790"/>
+        <Style x:Key="TreeViewStyle" TargetType="{x:Type TreeView}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ListBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TreeView}">
+                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true">
+                            <ScrollViewer x:Name="_tv_scrollviewer_" Background="{TemplateBinding Background}" CanContentScroll="false" Focusable="false" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="VirtualizingStackPanel.IsVirtualizing" Value="true">
+                                <Setter Property="CanContentScroll" TargetName="_tv_scrollviewer_" Value="true"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="VirtualizingStackPanel.IsVirtualizing" Value="true">
+                    <Setter Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel/>
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid Margin="0,0,0,-1">
         <Grid.RowDefinitions>
             <RowDefinition Height="0*"/>
@@ -15,7 +60,12 @@
         <TabControl x:Name="tabControl" Margin="5,30,182,5" TabStripPlacement="Bottom" SelectionChanged="tabControl_SelectionChanged" ScrollViewer.CanContentScroll="True" Grid.Row="1">
             <TabItem Header="定义">
                 <Grid Background="#FFE5E5E5">
-                    <TreeView x:Name="treeView0" IsTextSearchEnabled="True" SelectedItemChanged="treeView0_SelectedItemChanged" BorderThickness="0" AllowDrop="True"/>
+                    <TreeView x:Name="treeView0" IsTextSearchEnabled="True" SelectedItemChanged="treeView0_SelectedItemChanged" BorderThickness="0" AllowDrop="True" LostFocus="treeView0_LostFocus" GotFocus="treeView0_GotFocus">
+                        <TreeView.Resources>
+                            <Style TargetType="{x:Type TreeViewItem}"
+                       BasedOn="{StaticResource AeroTreeStyle}"/>
+                        </TreeView.Resources>
+                    </TreeView>
                 </Grid>
             </TabItem>
             <TabItem Header="结构">
@@ -24,10 +74,10 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <TextBox x:Name="nameTextBox" Margin="0,130,10,0" Grid.Row="1" HorizontalAlignment="Right" Width="167" ToolTip="name" Height="22" VerticalAlignment="Top"/>
-        <TextBox x:Name="commentTextBox" HorizontalAlignment="Right" Margin="0,170,10,0" TextWrapping="Wrap" Width="167" Grid.Row="1" ToolTip="comment" Height="147" VerticalAlignment="Top"/>
+        <TextBox x:Name="nameTextBox" Margin="0,130,10,0" Grid.Row="1" HorizontalAlignment="Right" Width="167" ToolTip="name" Height="22" VerticalAlignment="Top" TextChanged="nameTextBox_TextChanged"/>
+        <TextBox x:Name="commentTextBox" HorizontalAlignment="Right" Margin="0,170,10,0" TextWrapping="Wrap" Width="167" Grid.Row="1" ToolTip="comment" Height="147" VerticalAlignment="Top" TextChanged="commentTextBox_TextChanged"/>
         <Grid x:Name="msgAttrPanel" Height="127" Margin="0,322,10,0" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Width="167">
-            <TextBox x:Name="idTextBox" HorizontalAlignment="Right" Margin="0,16,97,0" TextWrapping="Wrap" Text="0x0000" Width="70" Height="24" VerticalAlignment="Top" ToolTip="protocol id"/>
+            <TextBox x:Name="idTextBox" HorizontalAlignment="Right" Margin="0,16,97,0" TextWrapping="Wrap" Text="0x0000" Width="70" Height="24" VerticalAlignment="Top" ToolTip="protocol id" TextChanged="idTextBox_TextChanged"/>
             <ComboBox x:Name="ptypeComboBox" HorizontalAlignment="Right" Margin="0,55,97,0" Width="70" Height="22" VerticalAlignment="Top" ToolTip="protocol type" SelectedIndex="0">
                 <ComboBoxItem Content="C-&gt;S"/>
                 <ComboBoxItem Content="S-&gt;C"/>
@@ -40,9 +90,9 @@
                 <ComboBoxItem Content="int"/>
                 <ComboBoxItem Content="long"/>
                 <ComboBoxItem Content="float"/>
-                <ComboBoxItem Content="string"/>
+                <ComboBoxItem Content="String"/>
             </ComboBox>
-            <CheckBox x:Name="isArrayCheckBox" Content="数组" Margin="1,20,125,0" VerticalAlignment="Top"/>
+            <CheckBox x:Name="isArrayCheckBox" Content="数组" Margin="1,20,125,0" VerticalAlignment="Top" Checked="isArrayCheckBox_Checked" Unchecked="isArrayCheckBox_Unchecked"/>
         </Grid>
         <GridSplitter x:Name="gridSplitter" Height="176" Margin="0,24,89,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="1" FlowDirection="RightToLeft" RenderTransformOrigin="0.5,0.5">
             <GridSplitter.RenderTransform>
@@ -54,17 +104,29 @@
                 </TransformGroup>
             </GridSplitter.RenderTransform>
         </GridSplitter>
-        <TextBox x:Name="searchIdTextBox" HorizontalAlignment="Right" Height="23" Margin="0,30,57,0" Grid.RowSpan="2" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="searchNameTextBox" HorizontalAlignment="Right" Height="24" Margin="0,68,57,0" Grid.RowSpan="2" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="searchIdTextBox" HorizontalAlignment="Right" Height="23" Margin="0,30,57,0" Grid.RowSpan="2" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" KeyDown="searchIdTextBox_KeyDown"/>
+        <TextBox x:Name="searchNameTextBox" HorizontalAlignment="Right" Height="24" Margin="0,68,57,0" Grid.RowSpan="2" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" KeyDown="searchNameTextBox_KeyDown"/>
         <ToolBar x:Name="toolBar" VerticalAlignment="Top" Height="25" Grid.RowSpan="2">
             <Button x:Name="addNameSpaceBtn" Content="+ namespace" Margin="0,1,0,-3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="85" Foreground="Black" BorderBrush="White" Background="{x:Null}" Click="addNameSpaceBtn_Click"/>
-            <Button x:Name="addMsgBtn" Content="+ message" HorizontalAlignment="Left" Margin="0,1,0,-3" VerticalAlignment="Top" Width="70" Background="{x:Null}" BorderThickness="1" MouseLeftButtonDown="addMsgBtn_MouseLeftButtonDown"/>
-            <Button x:Name="addClassBtn" Content="+ class" HorizontalAlignment="Left" Margin="0,1,0,-3" VerticalAlignment="Top" Width="50" Background="{x:Null}" BorderThickness="1" MouseLeftButtonDown="addClassBtn_MouseLeftButtonDown"/>
-            <Button x:Name="addVarBtn" Content="+ variable" HorizontalAlignment="Left" VerticalAlignment="Top" Width="63" Background="{x:Null}" MouseLeftButtonDown="addVarBtn_MouseLeftButtonDown"/>
-            <Button x:Name="upBtn" Content="↑" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" MouseLeftButtonDown="upBtn_MouseLeftButtonDown"/>
-            <Button x:Name="downBtn" Content="↓" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" MouseLeftButtonDown="downBtn_MouseLeftButtonDown"/>
-            <Button x:Name="genClientCodeBtn" Content="→C" Height="20" VerticalAlignment="Top" Width="40" MouseLeftButtonDown="genClientCodeBtn_MouseLeftButtonDown" Click="genClientCodeBtn_Click"/>
-            <Button x:Name="genServerCodeBtn" Content="→S" Height="20" VerticalAlignment="Top" Width="40" MouseLeftButtonDown="genServerCodeBtn_MouseLeftButtonDown"/>
+            <Button x:Name="addMsgBtn" Content="+ message" HorizontalAlignment="Left" Margin="0,1,0,-3" VerticalAlignment="Top" Width="70" Background="{x:Null}" BorderThickness="1" Click="addMsgBtn_Click"/>
+            <Button x:Name="addClassBtn" Content="+ class" HorizontalAlignment="Left" Margin="0,1,0,-3" VerticalAlignment="Top" Width="50" Background="{x:Null}" BorderThickness="1" Click="addClassBtn_Click"/>
+            <Button x:Name="addVarBtn" Content="+ variable" HorizontalAlignment="Left" VerticalAlignment="Top" Width="63" Background="{x:Null}" Click="addVarBtn_Click"/>
+            <Button x:Name="upBtn" Content="↑" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="upBtn_Click"/>
+            <Button x:Name="downBtn" Content="↓" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="downBtn_Click"/>
+            <Button x:Name="genClientCodeBtn" Content="→C" Height="20" VerticalAlignment="Top" Width="40" Click="genClientCodeBtn_Click"/>
+            <Button x:Name="genServerCodeBtn" Content="→S" Height="20" VerticalAlignment="Top" Width="40" Click="genServerCodeBtn_Click"/>
+            <Button x:Name="settingBtn" Content="" Height="20" VerticalAlignment="Top" Width="24" Click="settingBtn_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="settings.png" Stretch="Uniform"/>
+                </Button.Background>
+            </Button>
+            <Button x:Name="saveBtn" Content="" Height="20" VerticalAlignment="Top" Width="20" Click="saveBtn_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="save.png" Stretch="Uniform"/>
+                </Button.Background>
+            </Button>
         </ToolBar>
+        <Button x:Name="expandAllBtn" Content="展开所有" HorizontalAlignment="Left" Margin="260,0,0,3" Grid.RowSpan="2" Width="75" Click="expandAllBtn_Click" Height="22" VerticalAlignment="Bottom"/>
+        <Button x:Name="unexpandAllBtn" Content="收缩所有" HorizontalAlignment="Left" Margin="340,0,0,3" Grid.RowSpan="2" Width="75" Click="unexpandAllBtn_Click" Height="22" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>
