@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization.Json;
 using System.Runtime.Serialization;
+using System.Windows.Controls;
 
 namespace ProtocolEditor
 {
@@ -47,6 +48,9 @@ namespace ProtocolEditor
 
         [IgnoreDataMember]
         public object parent;
+
+        [IgnoreDataMember]
+        public TreeViewItem item;
     }
 
     [DataContract]
@@ -92,6 +96,9 @@ namespace ProtocolEditor
 
         [IgnoreDataMember]
         public object parent;
+
+        [IgnoreDataMember]
+        public TreeViewItem item;
     }
 
     [DataContract]
@@ -121,6 +128,9 @@ namespace ProtocolEditor
 
         [IgnoreDataMember]
         public object parent;
+
+        [IgnoreDataMember]
+        public TreeViewItem item;
     }
 
     [DataContract]
@@ -134,6 +144,9 @@ namespace ProtocolEditor
 
         [DataMember(Order = 2)]
         public List<Msg> msgs = new List<Msg>();
+
+        [IgnoreDataMember]
+        public TreeViewItem item;
 
         [IgnoreDataMember]
         public String header
