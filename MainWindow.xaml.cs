@@ -43,6 +43,7 @@ namespace ProtocolEditor
         ConfigParser parser;
         Config cfg;
         bool refreshing = false;
+        bool addingItem = false;
         int maxMsgId;
 
         const int TabTypeNone = -1;
@@ -566,6 +567,8 @@ namespace ProtocolEditor
 
         private void addNameSpaceBtn_Click(object sender, RoutedEventArgs e)
         {
+            addingItem = true;
+
             Group g = new Group()
             {
                 name = getAutoName(cfg.groups, ItemType.Group),
@@ -596,6 +599,8 @@ namespace ProtocolEditor
 
         private void addMsgBtn_Click(object sender, RoutedEventArgs e)
         {
+            addingItem = true;
+
             Msg m = new Msg()
             {
                 name = getAutoName(cfg.groups, ItemType.Message),
@@ -672,6 +677,8 @@ namespace ProtocolEditor
 
         private void addClassBtn_Click(object sender, RoutedEventArgs e)
         {
+            addingItem = true;
+
             Class c = new Class()
             {
                 name = getAutoName(cfg.classes, ItemType.Class),
@@ -730,6 +737,8 @@ namespace ProtocolEditor
 
         private void addVarBtn_Click(object sender, RoutedEventArgs e)
         {
+            addingItem = true;
+
             Var v = new Var()
             {
                 //name = "empty_var",
@@ -966,6 +975,7 @@ namespace ProtocolEditor
             if (saveBtn.IsEnabled)
             {
                 parser.saveToFile(cfg);
+                saveBtn.IsEnabled = false;
             }
 
             ScriptEngine engine = IronPython.Hosting.Python.CreateEngine();
@@ -1095,6 +1105,14 @@ namespace ProtocolEditor
 
         private void nameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (addingItem)
+            {
+                nameTextBox.Focus();
+                nameTextBox.SelectAll();
+                addingItem = false;
+                return;
+            }
+
             if (refreshing)
             {
                 return;
@@ -1368,6 +1386,67 @@ namespace ProtocolEditor
                     default:
                         break;
                 }
+            }
+        }
+
+        private bool check(Key key)
+        {
+            return Keyboard.IsKeyDown(key);
+        }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            //save
+            if (check(Key.LeftCtrl) && check(Key.S))
+            {
+                if (saveBtn.IsEnabled)
+                {
+                    parser.saveToFile(cfg);
+                    saveBtn.IsEnabled = false;
+                }
+            }
+            else if (check(Key.LeftCtrl) || check(Key.RightCtrl))
+            {
+                if (check(Key.D1))
+                {
+                    if (addNameSpaceBtn.IsEnabled)
+                    {
+                        addNameSpaceBtn_Click(null, null);
+                    }
+                }
+                else if (check(Key.D2))
+                {
+                    if (addMsgBtn.IsEnabled)
+                    {
+	                    addMsgBtn_Click(null, null);
+                    }
+                }
+                else if (check(Key.D3))
+                {
+                    if (addClassBtn.IsEnabled)
+                    {
+	                    addClassBtn_Click(null, null);
+                    }
+                }
+                else if (check(Key.D4))
+                {
+                    if (addVarBtn.IsEnabled)
+                    {
+	                    addVarBtn_Click(null, null);
+                    }
+                }
+                else if (check(Key.Up))
+                {
+                    upBtn_Click(null, null);
+                }
+                else if (check(Key.Down))
+                {
+                    downBtn_Click(null, null);
+                }
+            }
+            else if (check(Key.Delete))
+            {
+                delBtn_Click(null, null);
             }
         }
     }

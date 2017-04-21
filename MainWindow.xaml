@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProtocolEditor"
         mc:Ignorable="d"
-        Title="ProtocolEditor" Height="750.886" Width="659.438" Closing="Window_Closing" Icon="icon.ico">
+        Title="ProtocolEditor" Height="750.886" Width="659.438" Closing="Window_Closing" Icon="icon.ico" PreviewKeyDown="Window_PreviewKeyDown">
     <Window.Resources>
         <SolidColorBrush x:Key="ListBorder" Color="#828790"/>
         <Style x:Key="TreeViewStyle" TargetType="{x:Type TreeView}">
@@ -91,6 +91,8 @@
             <Label x:Name="label4" Content="类型" HorizontalAlignment="Left" Margin="-4,53,0,0" VerticalAlignment="Top"/>
         </Grid>
         <Grid x:Name="varAttrPanel" Height="127" Margin="0,322,10,0" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Width="167">
+            <CheckBox x:Name="isArrayCheckBox" Content="是否是数组" Margin="1,20,85,0" VerticalAlignment="Top" Checked="isArrayCheckBox_Checked" Unchecked="isArrayCheckBox_Unchecked"/>
+            <Label x:Name="label5" Content="变量类型" HorizontalAlignment="Left" Margin="-3,45,0,0" VerticalAlignment="Top"/>
             <ComboBox x:Name="vtypeComboBox" HorizontalAlignment="Left" Margin="1,0,0,35" Width="166" Height="24" VerticalAlignment="Bottom" SelectedIndex="2" SelectionChanged="vtypeComboBox_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Visible">
                 <ComboBoxItem Content="byte"/>
                 <ComboBoxItem Content="short"/>
@@ -99,8 +101,6 @@
                 <ComboBoxItem Content="float"/>
                 <ComboBoxItem Content="String"/>
             </ComboBox>
-            <CheckBox x:Name="isArrayCheckBox" Content="是否是数组" Margin="1,20,85,0" VerticalAlignment="Top" Checked="isArrayCheckBox_Checked" Unchecked="isArrayCheckBox_Unchecked"/>
-            <Label x:Name="label5" Content="变量类型" HorizontalAlignment="Left" Margin="-3,45,0,0" VerticalAlignment="Top"/>
         </Grid>
         <GridSplitter x:Name="gridSplitter" Height="176" Margin="0,24,89,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="1" FlowDirection="RightToLeft" RenderTransformOrigin="0.5,0.5">
             <GridSplitter.RenderTransform>
@@ -123,15 +123,23 @@
             <Button x:Name="upBtn" Content="↑" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="upBtn_Click" ToolTip="向上移动"/>
             <Button x:Name="downBtn" Content="↓" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="downBtn_Click" ToolTip="向下上移动"/>
             <Button x:Name="delBtn" Content="X" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="delBtn_Click" ToolTip="删除"/>
-            <Separator Height="20" Margin="0" VerticalAlignment="Top" Width="30" Background="{x:Null}"/>
+            <Separator Height="20" Margin="0" VerticalAlignment="Top" Width="20" Background="{x:Null}"/>
             <Button x:Name="genClientCodeBtn" Content="→C" Height="20" VerticalAlignment="Top" Width="40" Click="genClientCodeBtn_Click" ToolTip="生成客户端代码"/>
             <Button x:Name="genServerCodeBtn" Content="→S" Height="20" VerticalAlignment="Top" Width="40" Click="genServerCodeBtn_Click" ToolTip="生成服务器代码"/>
-            <Separator Height="20" Margin="0" VerticalAlignment="Top" Width="30" Background="{x:Null}"/>
-            <Button x:Name="settingBtn" Content="设置" Height="20" VerticalAlignment="Top" Width="50" Click="settingBtn_Click" Background="{x:Null}" ToolTip="设置配置文件路径"/>
-            <Button x:Name="saveBtn" Content="保存" Height="20" VerticalAlignment="Top" Width="50" Click="saveBtn_Click" Background="{x:Null}" ToolTip="保存配置文件"/>
+            <Separator Height="20" Margin="0" VerticalAlignment="Top" Width="20" Background="{x:Null}"/>
+            <Button x:Name="settingBtn" Content="设置" Height="20" VerticalAlignment="Top" Width="40" Click="settingBtn_Click" Background="{x:Null}" ToolTip="设置配置文件路径"/>
+            <Button x:Name="saveBtn" Content="保存" Height="20" VerticalAlignment="Top" Width="40" Click="saveBtn_Click" Background="{x:Null}" ToolTip="保存配置文件"/>
             <Menu x:Name="menu" Background="{x:Null}" Height="20" VerticalAlignment="Top" Width="41">
                 <MenuItem Background="{x:Null}" Header="  ..." Margin="0" Width="41">
-                    <MenuItem Background="{x:Null}" Header="by lg"/>
+                    <MenuItem Background="{x:Null}" Header="By lg"/>
+                    <MenuItem Background="{x:Null}" Header="增加分组    CTRL+1"/>
+                    <MenuItem Background="{x:Null}" Header="增加消息    CTRL+2"/>
+                    <MenuItem Background="{x:Null}" Header="增加结构    CTRL+3"/>
+                    <MenuItem Background="{x:Null}" Header="增加变量    CTRL+4"/>
+                    <MenuItem Background="{x:Null}" Header="向上移动    CTRL+↑"/>
+                    <MenuItem Background="{x:Null}" Header="向下移动    CTRL+↓"/>
+                    <MenuItem Background="{x:Null}" Header="删       除    DEL"/>
+                    <MenuItem Background="{x:Null}" Header="保       存    CTRL+S"/>
                 </MenuItem>
             </Menu>
         </ToolBar>
