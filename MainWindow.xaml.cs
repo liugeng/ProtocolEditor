@@ -49,9 +49,9 @@ namespace ProtocolEditor
         const int TabTypeDefine = 0;
         const int TabTypeClass = 1;
 
-        Brush gColor = new SolidColorBrush(Colors.Blue);
-        Brush mColor = new SolidColorBrush(Colors.CornflowerBlue);
-        Brush vColor = new SolidColorBrush(Colors.Violet);
+        Brush gColor = new SolidColorBrush(Colors.LightSeaGreen);// DarkSlateGray);
+        Brush mColor = new SolidColorBrush(Colors.DodgerBlue);
+        Brush vColor = new SolidColorBrush(Colors.Crimson);
 
         string[] baseVarTypes = { "byte", "short", "int", "long", "float", "String"};
 
@@ -376,12 +376,13 @@ namespace ProtocolEditor
             addNameSpaceBtn.IsEnabled = (tabIdx == TabTypeDefine);
             upBtn.IsEnabled = (typeId != ItemType.None);
             downBtn.IsEnabled = (typeId != ItemType.None);
+            delBtn.IsEnabled = (typeId != ItemType.None);
             searchIdTextBox.IsEnabled = (tabIdx == TabTypeDefine);
         }
 
         private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Console.WriteLine("tabControl_SelectionChanged");
+            //Console.WriteLine("tabControl_SelectionChanged");
 
             refreshShowHide();
         }
@@ -432,12 +433,23 @@ namespace ProtocolEditor
                         commentTextBox.Text = v.comment;
                         isArrayCheckBox.IsChecked = v.isArray;
                         vtypeComboBox.SelectedIndex = -1;
+
+                        string className = "";
+                        if (tabControl.SelectedIndex == TabTypeClass)
+                        {
+                            className = (v.parent as Class).name;
+                        }
+
                         foreach (ComboBoxItem item in vtypeComboBox.Items)
                         {
-                            if ((item.Content as String) == v.type)
+                            if ((item.Content as string) == v.type)
                             {
                                 item.IsSelected = true;
-                                break;
+                            }
+
+                            if (tabControl.SelectedIndex == TabTypeClass)
+                            {
+                                item.IsEnabled = (item.Content as string) != className;
                             }
                         }
                         break;
@@ -449,11 +461,114 @@ namespace ProtocolEditor
             refreshing = false;
         }
 
+        private bool isNameExist(dynamic list, ItemType t, string name)
+        {
+            foreach (object e in list)
+            {
+                switch (t)
+                {
+                    case ItemType.Group:
+                        {
+                            if ((e as Group).name == name)
+                            {
+                                return true;
+                            }
+                            break;
+                        }
+                    case ItemType.Message:
+                        {
+                            //if ((e as Msg).name == name)
+                            //{
+                            //    return true;
+                            //}
+
+                            //保持不同的group下的msg都不同名
+                            foreach (Msg m in (e as Group).msgs)
+                            {
+                                if (m.name == name)
+                                {
+                                    return true;
+                                }
+                            }
+                            break;
+                        }
+                    case ItemType.Class:
+                        {
+                            if ((e as Class).name == name)
+                            {
+                                return true;
+                            }
+                            break;
+                        }
+                    case ItemType.Variable:
+                        {
+                            if ((e as Var).name == name)
+                            {
+                                return true;
+                            }
+                            break;
+                        }
+                    default:
+                        break;
+                }
+            }
+            return false;
+        }
+
+        private string getAutoName(dynamic list, ItemType t)
+        {
+            string prefix = "";
+            switch (t)
+            {
+                case ItemType.Group:
+                    {
+                        prefix = "Empty_group";
+                        break;
+                    }
+                case ItemType.Message:
+                    {
+                        prefix = "Empty_msg";
+                        break;
+                    }
+                case ItemType.Class:
+                    {
+                        prefix = "Empty_class";
+                        break;
+                    }
+                case ItemType.Variable:
+                    {
+                        prefix = "empty_var";
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+            string name = "";
+            int n = 0;
+
+            while (true)
+            {
+                name = prefix + (n == 0 ? "" : n.ToString());
+                if (!isNameExist(list, t, name))
+                {
+                    return name;
+                }
+                n++;
+                if (n >= 1000)
+                {
+                    break;
+                }
+            }
+
+            return prefix;
+        }
+
         private void addNameSpaceBtn_Click(object sender, RoutedEventArgs e)
         {
             Group g = new Group()
             {
-                name = "empty_group",
+                name = getAutoName(cfg.groups, ItemType.Group),
                 comment = ""
             };
 
@@ -481,10 +596,9 @@ namespace ProtocolEditor
 
         private void addMsgBtn_Click(object sender, RoutedEventArgs e)
         {
-
             Msg m = new Msg()
             {
-                name = "empty_msg",
+                name = getAutoName(cfg.groups, ItemType.Message),
                 comment = "",
                 id = "0x0000",
                 type = "CS"
@@ -560,7 +674,7 @@ namespace ProtocolEditor
         {
             Class c = new Class()
             {
-                name = "empty_class",
+                name = getAutoName(cfg.classes, ItemType.Class),
                 comment = ""
             };
 
@@ -608,7 +722,7 @@ namespace ProtocolEditor
                 int idx = cfg.classes.IndexOf(selc);
                 cfg.classes.Insert(idx + 1, c);
                 treeView1.Items.Insert(idx + 1, item);
-                vtypeComboBox.Items.Insert(idx + 1, boxItem);
+                vtypeComboBox.Items.Insert(baseVarTypes.Length + idx + 1, boxItem);
             }
             
             changed();
@@ -618,7 +732,7 @@ namespace ProtocolEditor
         {
             Var v = new Var()
             {
-                name = "empty_var",
+                //name = "empty_var",
                 comment = "",
                 type = "int",
                 isArray = false,
@@ -627,7 +741,7 @@ namespace ProtocolEditor
 
             TreeViewItem vItem = new TreeViewItem()
             {
-                Header = v.header,
+                //Header = v.header,
                 IsExpanded = true,
                 IsSelected = true,
                 FontSize = 14,
@@ -664,6 +778,9 @@ namespace ProtocolEditor
                 {
                     return;
                 }
+
+                v.name = getAutoName(parent.vars, ItemType.Variable);
+                vItem.Header = v.header;
 
                 v.parent = parent;
                 v.item = vItem;
@@ -708,6 +825,9 @@ namespace ProtocolEditor
                     return;
                 }
 
+                v.name = getAutoName(parent.vars, ItemType.Variable);
+                vItem.Header = v.header;
+
                 v.parent = parent;
                 v.item = vItem;
 
@@ -741,9 +861,15 @@ namespace ProtocolEditor
             list[idx2] = tmp;
         }
 
-        private void swapItem(ItemCollection items, int idx1, int idx2)
+        //itemType 0:TreeViewItem  1.ComboBoxItem
+        private void swapItem(ItemCollection items, int idx1, int idx2, int itemType = 0)
         {
             if (idx1 < 0 || idx1 >= items.Count || idx2 < 0 || idx2 >= items.Count)
+            {
+                return;
+            }
+
+            if (itemType == 1 && (idx1 < baseVarTypes.Length || idx2 < baseVarTypes.Length))
             {
                 return;
             }
@@ -755,7 +881,14 @@ namespace ProtocolEditor
             items.RemoveAt(maxIdx);
             items.Insert(minIdx, tmp);
 
-            (items[idx2] as TreeViewItem).IsSelected = true;
+            if (itemType == 0)
+            {
+                (items[idx2] as TreeViewItem).IsSelected = true;
+            }
+            else if (itemType == 1)
+            {
+                (items[idx2] as ComboBoxItem).IsSelected = true;
+            }
 
             //object tmp = items[idx1];
             //items[idx1] = items[idx2];
@@ -792,6 +925,7 @@ namespace ProtocolEditor
                         int idx = cfg.classes.IndexOf(c);
                         swap<Class>(cfg.classes, idx, idx + n);
                         swapItem(treeView1.Items, idx, idx + n);
+                        swapItem(vtypeComboBox.Items, baseVarTypes.Length + idx, baseVarTypes.Length + idx + n, 1);
                         break;
                     }
                 case ItemType.Variable:
@@ -1117,6 +1251,10 @@ namespace ProtocolEditor
 
             TreeViewItem selectedItem = getSelectedItem();
             TreeViewItemArg arg = selectedItem.Tag as TreeViewItemArg;
+            if (arg.type != ItemType.Variable)
+            {
+                return;
+            }
             Var v = arg.data as Var;
 
             ComboBoxItem boxItem = vtypeComboBox.SelectedItem as ComboBoxItem;
@@ -1154,6 +1292,83 @@ namespace ProtocolEditor
             }
 
             tabControl.SelectedIndex = TabTypeClass;
+        }
+
+        private void removeTreeViewItem(ItemsControl parent, TreeViewItem item)
+        {
+            int idx = parent.Items.IndexOf(item);
+            parent.Items.Remove(item);
+
+            if (idx == 0)
+            {
+                if (parent is TreeViewItem)
+                {
+                    (parent as TreeViewItem).IsSelected = true;
+                }
+            }
+            else if (idx < parent.Items.Count)
+            {
+                (parent.Items[idx] as TreeViewItem).IsSelected = true;
+            }
+            else
+            {
+                idx--;
+                (parent.Items[idx] as TreeViewItem).IsSelected = true;
+            }
+
+            changed();
+        }
+
+        private void delBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show(this, "确定要删除吗？", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                TreeViewItemArg arg = getSelectedArg();
+                switch (arg.type)
+                {
+                    case ItemType.Group:
+                        {
+                            Group g = arg.data as Group;
+                            cfg.groups.Remove(g);
+                            removeTreeViewItem(treeView0, g.item);
+                            break;
+                        }
+                    case ItemType.Message:
+                        {
+                            Msg m = arg.data as Msg;
+                            Group g = m.parent as Group;
+                            g.msgs.Remove(m);
+                            removeTreeViewItem(g.item, m.item);
+                            break;
+                        }
+                    case ItemType.Class:
+                        {
+                            Class c = arg.data as Class;
+                            cfg.classes.Remove(c);
+                            removeTreeViewItem(treeView1, c.item);
+                            break;
+                        }
+                    case ItemType.Variable:
+                        {
+                            Var v = arg.data as Var;
+                            if (tabControl.SelectedIndex == TabTypeDefine)
+                            {
+                                Msg m = v.parent as Msg;
+                                m.vars.Remove(v);
+                                removeTreeViewItem(m.item, v.item);
+                            }
+                            else
+                            {
+                                Class c = v.parent as Class;
+                                c.vars.Remove(v);
+                                removeTreeViewItem(c.item, v.item);
+                            }
+                            break;
+                        }
+                    default:
+                        break;
+                }
+            }
         }
     }
 }

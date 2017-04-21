@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProtocolEditor"
         mc:Ignorable="d"
-        Title="PEditor" Height="750.886" Width="659.438" Closing="Window_Closing">
+        Title="ProtocolEditor" Height="750.886" Width="659.438" Closing="Window_Closing" Icon="icon.ico">
     <Window.Resources>
         <SolidColorBrush x:Key="ListBorder" Color="#828790"/>
         <Style x:Key="TreeViewStyle" TargetType="{x:Type TreeView}">
@@ -122,9 +122,11 @@
             <Separator Height="20" Margin="0" VerticalAlignment="Top" Width="30" Background="{x:Null}"/>
             <Button x:Name="upBtn" Content="↑" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="upBtn_Click" ToolTip="向上移动"/>
             <Button x:Name="downBtn" Content="↓" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="downBtn_Click" ToolTip="向下上移动"/>
+            <Button x:Name="delBtn" Content="X" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="delBtn_Click" ToolTip="删除"/>
+            <Separator Height="20" Margin="0" VerticalAlignment="Top" Width="30" Background="{x:Null}"/>
             <Button x:Name="genClientCodeBtn" Content="→C" Height="20" VerticalAlignment="Top" Width="40" Click="genClientCodeBtn_Click" ToolTip="生成客户端代码"/>
             <Button x:Name="genServerCodeBtn" Content="→S" Height="20" VerticalAlignment="Top" Width="40" Click="genServerCodeBtn_Click" ToolTip="生成服务器代码"/>
-            <Separator Height="20" Margin="0" VerticalAlignment="Top" Width="36" Background="{x:Null}"/>
+            <Separator Height="20" Margin="0" VerticalAlignment="Top" Width="30" Background="{x:Null}"/>
             <Button x:Name="settingBtn" Content="设置" Height="20" VerticalAlignment="Top" Width="50" Click="settingBtn_Click" Background="{x:Null}" ToolTip="设置配置文件路径"/>
             <Button x:Name="saveBtn" Content="保存" Height="20" VerticalAlignment="Top" Width="50" Click="saveBtn_Click" Background="{x:Null}" ToolTip="保存配置文件"/>
             <Menu x:Name="menu" Background="{x:Null}" Height="20" VerticalAlignment="Top" Width="41">

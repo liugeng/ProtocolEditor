@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization.Json;
 using System.Runtime.Serialization;
 using System.Windows.Controls;
+using Newtonsoft.Json; //NuGet
 
 namespace ProtocolEditor
 {
@@ -202,13 +203,15 @@ namespace ProtocolEditor
 
         public void saveToFile(Config cfg)
         {
-            DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(cfg.GetType());
-            string jsonStr = "";
-            using (MemoryStream stream = new MemoryStream())
-            {
-                jsonSerializer.WriteObject(stream, cfg);
-                jsonStr = Encoding.UTF8.GetString(stream.ToArray());
-            }
+            //DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(cfg.GetType());
+            //string jsonStr = "";
+            //using (MemoryStream stream = new MemoryStream())
+            //{
+            //    jsonSerializer.WriteObject(stream, cfg);
+            //    jsonStr = Encoding.UTF8.GetString(stream.ToArray());
+            //}
+
+            string jsonStr = JsonConvert.SerializeObject(cfg, Formatting.Indented);
 
             String configPath = Path.Combine(Properties.Settings.Default.configPath, "ProtocolEditor.Msg.json");
             File.WriteAllText(configPath, jsonStr);
