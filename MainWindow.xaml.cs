@@ -52,9 +52,10 @@ namespace ProtocolEditor
 
         Brush gColor = new SolidColorBrush(Colors.LightSeaGreen);// DarkSlateGray);
         Brush mColor = new SolidColorBrush(Colors.DodgerBlue);
+        Brush msColor = new SolidColorBrush(Colors.DeepSkyBlue);
         Brush vColor = new SolidColorBrush(Colors.Crimson);
 
-        string[] baseVarTypes = { "byte", "short", "int", "long", "float", "String"};
+        string[] baseVarTypes = { "bool", "byte", "short", "int", "long", "float", "String"};
 
         public MainWindow()
         {
@@ -149,7 +150,7 @@ namespace ProtocolEditor
                     {
                         Header = m.header,
                         FontSize = 14,
-                        Foreground = mColor,
+                        Foreground = (m.type == "CS" ? mColor : msColor),
                         //Padding = new Thickness(0, 10, 0, 0),
                         Tag = new TreeViewItemArg()
                         {
@@ -1035,6 +1036,8 @@ namespace ProtocolEditor
             Var v = ((selectedItem.Tag as TreeViewItemArg).data as Var);
             v.isArray = true;
             selectedItem.Header = v.header;
+
+            changed();
         }
 
         private void isArrayCheckBox_Unchecked(object sender, RoutedEventArgs e)
@@ -1048,6 +1051,8 @@ namespace ProtocolEditor
             Var v = ((selectedItem.Tag as TreeViewItemArg).data as Var);
             v.isArray = false;
             selectedItem.Header = v.header;
+
+            changed();
         }
 
         private void expandAllBtn_Click(object sender, RoutedEventArgs e)
@@ -1256,6 +1261,7 @@ namespace ProtocolEditor
             Msg m = arg.data as Msg;
             m.type = (ptypeComboBox.SelectedIndex == 0 ? "CS" : "SC");
             selectedItem.Header = m.header;
+            selectedItem.Foreground = (m.type == "CS" ? mColor : msColor);
 
             changed();
         }

@@ -34,16 +34,20 @@ namespace ProtocolEditor
         {
             get
             {
-                String ret = type + " " + name;
+                String str = type;
                 if (isArray)
                 {
-                    ret += "[]";
+                    str += "[]";
                 }
+
+                str += " ";
+                str += name;
+
                 if (comment != "")
                 {
-                    return ret + "  --" + comment;
+                    return str + "  --" + comment;
                 }
-                return ret;
+                return str;
             }
         }
 

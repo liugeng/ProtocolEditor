@@ -115,10 +115,10 @@
         <TextBox x:Name="searchIdTextBox" HorizontalAlignment="Right" Height="23" Margin="0,31,2,0" Grid.RowSpan="2" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" KeyDown="searchIdTextBox_KeyDown" ToolTip="搜索10进制或16进制协议号：123，0x0123"/>
         <TextBox x:Name="searchNameTextBox" HorizontalAlignment="Right" Height="24" Margin="0,70,2,0" Grid.RowSpan="2" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" KeyDown="searchNameTextBox_KeyDown" ToolTip="搜索组名、协议名、类名、变量名"/>
         <ToolBar x:Name="toolBar" VerticalAlignment="Top" Height="25" Grid.RowSpan="2">
-            <Button x:Name="addNameSpaceBtn" Content="+ namespace" Height="20" VerticalAlignment="Top" Width="90" Click="addNameSpaceBtn_Click"/>
-            <Button x:Name="addMsgBtn" Content="+ message" HorizontalAlignment="Left" Margin="0,1,0,-3" VerticalAlignment="Top" Width="70" Background="{x:Null}" BorderThickness="1" Click="addMsgBtn_Click"/>
-            <Button x:Name="addClassBtn" Content="+ class" HorizontalAlignment="Left" Margin="0,1,0,-3" VerticalAlignment="Top" Width="50" Background="{x:Null}" BorderThickness="1" Click="addClassBtn_Click"/>
-            <Button x:Name="addVarBtn" Content="+ variable" HorizontalAlignment="Left" VerticalAlignment="Top" Width="63" Background="{x:Null}" Click="addVarBtn_Click"/>
+            <Button x:Name="addNameSpaceBtn" Content="+namespace" Height="20" VerticalAlignment="Top" Width="90" Click="addNameSpaceBtn_Click"/>
+            <Button x:Name="addMsgBtn" Content="+message" HorizontalAlignment="Left" Margin="0,1,0,-3" VerticalAlignment="Top" Width="70" Background="{x:Null}" BorderThickness="1" Click="addMsgBtn_Click"/>
+            <Button x:Name="addClassBtn" Content="+class" HorizontalAlignment="Left" Margin="0,1,0,-3" VerticalAlignment="Top" Width="50" Background="{x:Null}" BorderThickness="1" Click="addClassBtn_Click"/>
+            <Button x:Name="addVarBtn" Content="+variable" HorizontalAlignment="Left" VerticalAlignment="Top" Width="63" Background="{x:Null}" Click="addVarBtn_Click"/>
             <Separator Height="20" Margin="0" VerticalAlignment="Top" Width="30" Background="{x:Null}"/>
             <Button x:Name="upBtn" Content="↑" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="upBtn_Click" ToolTip="向上移动"/>
             <Button x:Name="downBtn" Content="↓" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="downBtn_Click" ToolTip="向下上移动"/>
