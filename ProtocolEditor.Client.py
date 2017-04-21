@@ -1,7 +1,8 @@
 # -*- coding: cp936 -*-
 
-#-----------------------------------------------------------
-output = './output'
+#-------------------------------------------------------------------------------
+
+output = r'F:\MyTool\NewProj\BoloProj'
 
 classFileName       = 'Net_Classes.bolos'
 dispatcherName      = 'Net_Dispatcher.bolos'
@@ -17,7 +18,7 @@ tab         = '    '
 iters       = ['i', 'j', 'k', 'l', 'm', 'n']
 iterIdx     = 0
 tmpPath     = './tmp'
-#-----------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 isIronPy = vars().has_key('jsonFile')
 
@@ -47,7 +48,7 @@ fp.close()
 
 
 #转换type类型
-def T(t):
+def T(t, needClassPrefix=False):
     ret = t['type']
     if ret == 'byte' or ret == 'bool':
         ret = 'int'
@@ -56,6 +57,8 @@ def T(t):
         if t['isClass']:
             return 'class {0}[]'.format(ret)
         return ret + '[]'
+    elif t['isClass'] and needClassPrefix:
+        return 'class ' + ret
     return ret
 
 
@@ -193,7 +196,7 @@ def genSenderFile():
                     firstOne = False
                 else:
                     fp.write(', ')
-                fp.write(T(v) + ' ' + v['name'])
+                fp.write(T(v, True) + ' ' + v['name'])
                 
             fp.write(') {{\n'
                      '    BoloArray buf = new BoloArray();\n'
@@ -237,7 +240,7 @@ def readVar(fp, vtype, name, isArr, isClass, t):
             fp.write('{0}{1}{2} = new {3}[{4}];\n'.format(t, typeStr, name, vtype, lenVar))
         fp.write(t + 'for (int '+it+' = 0; '+it+' < '+lenVar+'; '+it+'++) {\n')
         readVar(fp, vtype, 'tmp'+it, False, isClass, t+tab)
-        fp.write(t + tab + name+'['+it+'] = obj'+it+';\n')
+        fp.write(t + tab + name+'['+it+'] = tmp'+it+';\n')
         fp.write(t + '}\n')
     elif vtype == 'int':
         fp.write('{0}{1}{2} = buf.readInt();\n'.format(t, typeStr, name))
@@ -268,7 +271,7 @@ def genHandleFunc(fp, m):
             firstOne = False
         else:
             fp.write(', ')
-        fp.write(T(v) + ' ' + v['name'])
+        fp.write(T(v, True) + ' ' + v['name'])
     fp.write(') {\n')
 
 def genParseFunc(fp, m):
