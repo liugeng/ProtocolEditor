@@ -121,7 +121,7 @@
             <Button x:Name="addVarBtn" Content="+variable" HorizontalAlignment="Left" VerticalAlignment="Top" Width="63" Background="{x:Null}" Click="addVarBtn_Click"/>
             <Separator Height="20" Margin="0" VerticalAlignment="Top" Width="30" Background="{x:Null}"/>
             <Button x:Name="upBtn" Content="↑" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="upBtn_Click" ToolTip="向上移动"/>
-            <Button x:Name="downBtn" Content="↓" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="downBtn_Click" ToolTip="向下上移动"/>
+            <Button x:Name="downBtn" Content="↓" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="downBtn_Click" ToolTip="向下移动"/>
             <Button x:Name="delBtn" Content="X" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="delBtn_Click" ToolTip="删除"/>
             <Separator Height="20" Margin="0" VerticalAlignment="Top" Width="20" Background="{x:Null}"/>
             <Button x:Name="genClientCodeBtn" Content="→C" Height="20" VerticalAlignment="Top" Width="40" Click="genClientCodeBtn_Click" ToolTip="生成客户端代码"/>
@@ -131,15 +131,17 @@
             <Button x:Name="saveBtn" Content="保存" Height="20" VerticalAlignment="Top" Width="40" Click="saveBtn_Click" Background="{x:Null}" ToolTip="保存配置文件"/>
             <Menu x:Name="menu" Background="{x:Null}" Height="20" VerticalAlignment="Top" Width="41">
                 <MenuItem Background="{x:Null}" Header="  ..." Margin="0" Width="41">
-                    <MenuItem Background="{x:Null}" Header="By lg"/>
                     <MenuItem Background="{x:Null}" Header="增加分组    CTRL+1"/>
                     <MenuItem Background="{x:Null}" Header="增加消息    CTRL+2"/>
                     <MenuItem Background="{x:Null}" Header="增加结构    CTRL+3"/>
                     <MenuItem Background="{x:Null}" Header="增加变量    CTRL+4"/>
-                    <MenuItem Background="{x:Null}" Header="向上移动    CTRL+↑"/>
-                    <MenuItem Background="{x:Null}" Header="向下移动    CTRL+↓"/>
+                    <MenuItem Background="{x:Null}" Header="向上移动    ALT+↑"/>
+                    <MenuItem Background="{x:Null}" Header="向下移动    ALT+↓"/>
+                    <MenuItem Background="{x:Null}" Header="刷       新    F5"/>
                     <MenuItem Background="{x:Null}" Header="删       除    DEL"/>
                     <MenuItem Background="{x:Null}" Header="保       存    CTRL+S"/>
+                    <Separator/>
+                    <MenuItem Background="{x:Null}" Header="By lg"/>
                 </MenuItem>
             </Menu>
         </ToolBar>

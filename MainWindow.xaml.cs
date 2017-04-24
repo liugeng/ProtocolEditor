@@ -295,7 +295,7 @@ namespace ProtocolEditor
             {
                 foreach (Group g in cfg.groups)
                 {
-                   if (g.name == searchName)
+                   if (g.name.ToLower() == searchName.ToLower())
                     {
                         g.item.IsExpanded = true;
                         g.item.IsSelected = true;
@@ -305,7 +305,7 @@ namespace ProtocolEditor
 
                     foreach (Msg m in g.msgs)
                     {
-                       if (m.idValue == searchId || m.name == searchName)
+                       if (m.idValue == searchId || m.name.ToLower() == searchName.ToLower())
                         {
                             g.item.IsExpanded = true;
                             m.item.IsExpanded = true;
@@ -316,7 +316,7 @@ namespace ProtocolEditor
 
                         foreach (Var v in m.vars)
                         {
-                            if (v.name == searchName)
+                            if (v.name.ToLower() == searchName.ToLower())
                             {
                                 g.item.IsExpanded = true;
                                 m.item.IsExpanded = true;
@@ -332,7 +332,7 @@ namespace ProtocolEditor
             {
                 foreach (Class c in cfg.classes)
                 {
-                    if (c.name == searchName)
+                    if (c.name.ToLower() == searchName.ToLower())
                     {
                         c.item.IsExpanded = true;
                         c.item.IsSelected = true;
@@ -342,7 +342,7 @@ namespace ProtocolEditor
 
                     foreach (Var v in c.vars)
                     {
-                        if (v.name == searchName)
+                        if (v.name.ToLower() == searchName.ToLower())
                         {
                             c.item.IsExpanded = true;
                             v.item.IsExpanded = true;
@@ -1441,7 +1441,10 @@ namespace ProtocolEditor
 	                    addVarBtn_Click(null, null);
                     }
                 }
-                else if (check(Key.Up))
+            }
+            else if (check(Key.LeftAlt) || check(Key.RightAlt))
+            {
+                if (check(Key.Up))
                 {
                     upBtn_Click(null, null);
                 }
@@ -1453,6 +1456,12 @@ namespace ProtocolEditor
             else if (check(Key.Delete))
             {
                 delBtn_Click(null, null);
+            }
+            else if (check(Key.F5))
+            {
+                parser = new ConfigParser();
+                cfg = parser.loadConfig();
+                createTree();
             }
         }
     }
