@@ -52,7 +52,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationIcon>images\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="IronPython, Version=2.7.7.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
@@ -182,11 +182,22 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="save.png" />
-    <Resource Include="settings.png" />
+    <Resource Include="images\client.png" />
+    <Resource Include="images\server.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icon.ico" />
+    <Resource Include="images\delete.png" />
+    <Resource Include="images\icon.ico" />
+    <Resource Include="images\moveDown.png" />
+    <Resource Include="images\moveUp.png" />
+    <Resource Include="images\open.png" />
+    <Resource Include="images\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\add1.png" />
+    <Resource Include="images\add2.png" />
+    <Resource Include="images\add3.png" />
+    <Resource Include="images\add4.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

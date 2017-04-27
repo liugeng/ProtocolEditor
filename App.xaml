@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:ProtocolEditor"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <SolidColorBrush x:Key="Foreground" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="BorderBrushHighlighted" Color="#FEC930"/>
+        <SolidColorBrush x:Key="BackgroundHighlighted" Color="#FFFF00"/>
+        <SolidColorBrush x:Key="BackgroundSelected" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="BorderBrushSelected" Color="#FEC930"/>
+        
         <Style x:Key="TreeViewItemFocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -166,6 +172,36 @@
                     </Setter>
                 </Trigger>
             </Style.Triggers>
+        </Style>
+        <Style x:Key="ToolBtnStyle" TargetType="Button">
+            <Setter Property="Visibility" Value="Visible"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border SnapsToDevicePixels="True"
+				            BorderThickness="1"
+				            BorderBrush="{TemplateBinding BorderBrush}" 
+				            Background="{TemplateBinding Background}">
+                            <Grid SnapsToDevicePixels="True">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource BorderBrushHighlighted}" />
+                                <Setter Property="Background" Value="{StaticResource BackgroundHighlighted}" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="{StaticResource BackgroundSelected}"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource BorderBrushSelected}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Application.Resources>
 </Application>

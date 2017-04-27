@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProtocolEditor"
         mc:Ignorable="d"
-        Title="ProtocolEditor" Height="750.886" Width="659.438" Closing="Window_Closing" Icon="icon.ico" PreviewKeyDown="Window_PreviewKeyDown">
+        Title="ProtocolEditor" Height="750.886" Width="659.438" Closing="Window_Closing" Icon="images/icon.ico" PreviewKeyDown="Window_PreviewKeyDown">
     <Window.Resources>
         <SolidColorBrush x:Key="ListBorder" Color="#828790"/>
         <Style x:Key="TreeViewStyle" TargetType="{x:Type TreeView}">
@@ -115,22 +115,45 @@
         <TextBox x:Name="searchIdTextBox" HorizontalAlignment="Right" Height="23" Margin="0,31,2,0" Grid.RowSpan="2" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" KeyDown="searchIdTextBox_KeyDown" ToolTip="搜索10进制或16进制协议号：123，0x0123"/>
         <TextBox x:Name="searchNameTextBox" HorizontalAlignment="Right" Height="24" Margin="0,70,2,0" Grid.RowSpan="2" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" KeyDown="searchNameTextBox_KeyDown" ToolTip="搜索组名、协议名、类名、变量名"/>
         <ToolBar x:Name="toolBar" VerticalAlignment="Top" Height="25" Grid.RowSpan="2">
-            <Button x:Name="addNameSpaceBtn" Content="+namespace" Height="20" VerticalAlignment="Top" Width="90" Click="addNameSpaceBtn_Click"/>
-            <Button x:Name="addMsgBtn" Content="+message" HorizontalAlignment="Left" Margin="0,1,0,-3" VerticalAlignment="Top" Width="70" Background="{x:Null}" BorderThickness="1" Click="addMsgBtn_Click"/>
-            <Button x:Name="addClassBtn" Content="+class" HorizontalAlignment="Left" Margin="0,1,0,-3" VerticalAlignment="Top" Width="50" Background="{x:Null}" BorderThickness="1" Click="addClassBtn_Click"/>
-            <Button x:Name="addVarBtn" Content="+variable" HorizontalAlignment="Left" VerticalAlignment="Top" Width="63" Background="{x:Null}" Click="addVarBtn_Click"/>
-            <Separator Height="20" Margin="0" VerticalAlignment="Top" Width="30" Background="{x:Null}"/>
-            <Button x:Name="upBtn" Content="↑" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="upBtn_Click" ToolTip="向上移动"/>
-            <Button x:Name="downBtn" Content="↓" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="downBtn_Click" ToolTip="向下移动"/>
-            <Button x:Name="delBtn" Content="X" HorizontalAlignment="Left" VerticalAlignment="Top" Width="23" Background="{x:Null}" Click="delBtn_Click" ToolTip="删除"/>
-            <Separator Height="20" Margin="0" VerticalAlignment="Top" Width="20" Background="{x:Null}"/>
-            <Button x:Name="genClientCodeBtn" Content="→C" Height="20" VerticalAlignment="Top" Width="40" Click="genClientCodeBtn_Click" ToolTip="生成客户端代码"/>
-            <Button x:Name="genServerCodeBtn" Content="→S" Height="20" VerticalAlignment="Top" Width="40" Click="genServerCodeBtn_Click" ToolTip="生成服务器代码"/>
-            <Separator Height="20" Margin="0" VerticalAlignment="Top" Width="20" Background="{x:Null}"/>
-            <Button x:Name="settingBtn" Content="设置" Height="20" VerticalAlignment="Top" Width="40" Click="settingBtn_Click" Background="{x:Null}" ToolTip="设置配置文件路径"/>
-            <Button x:Name="saveBtn" Content="保存" Height="20" VerticalAlignment="Top" Width="40" Click="saveBtn_Click" Background="{x:Null}" ToolTip="保存配置文件"/>
+            <Button x:Name="settingBtn" Height="20" VerticalAlignment="Top" Width="30" Click="settingBtn_Click" ToolTip="设置配置文件路径" Style="{StaticResource ToolBtnStyle}">
+                <Image Source="images/open.png" Width="16" Height="16"/>
+            </Button>
+            <Button x:Name="saveBtn" Height="20" VerticalAlignment="Top" Width="30" Click="saveBtn_Click" ToolTip="保存配置文件(CTRL+S)" Style="{StaticResource ToolBtnStyle}">
+                <Image Source="images/save.png" Width="16" Height="16"/>
+            </Button>
+            <Separator Height="20" VerticalAlignment="Top" Width="20" Background="{x:Null}"/>
+            <Button x:Name="addNameSpaceBtn" Height="20" VerticalAlignment="Top" Width="30" Click="addNameSpaceBtn_Click" Style="{StaticResource ToolBtnStyle}" ToolTip="增加分组(CTRL+1)">
+                <Image Source="images/add1.png"/>
+            </Button>
+            <Button x:Name="addMsgBtn" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Click="addMsgBtn_Click" Style="{StaticResource ToolBtnStyle}" ToolTip="增加消息(CTRL+2)">
+                <Image Source="images/add2.png"/>
+            </Button>
+            <Button x:Name="addClassBtn" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Click="addClassBtn_Click" Style="{StaticResource ToolBtnStyle}" ToolTip="增加结构(CTRL+3)">
+                <Image Source="images/add3.png"/>
+            </Button>
+            <Button x:Name="addVarBtn" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Click="addVarBtn_Click" Style="{StaticResource ToolBtnStyle}" ToolTip="增加变量(CTRL+4)">
+                <Image Source="images/add4.png"/>
+            </Button>
+            <Separator Height="20" VerticalAlignment="Top" Width="20" Background="{x:Null}"/>
+            <Button x:Name="upBtn" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="20" Click="upBtn_Click" ToolTip="向上移动(ALT+↑)" Style="{StaticResource ToolBtnStyle}">
+                <Image Source="images/moveUp.png" Width="16" Height="16"/>
+            </Button>
+            <Button x:Name="downBtn" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="20" Click="downBtn_Click" ToolTip="向下移动(ALT+↓)" Style="{StaticResource ToolBtnStyle}">
+                <Image Source="images/moveDown.png" Width="16" Height="16"/>
+            </Button>
+            <Button x:Name="delBtn" HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="20" Click="delBtn_Click" ToolTip="删除(DEL)" Style="{StaticResource ToolBtnStyle}">
+                <Image Source="images/delete.png" Width="16" Height="16"/>
+            </Button>
+            <Separator Height="20" VerticalAlignment="Top" Width="20" Background="{x:Null}"/>
+            <Button x:Name="genClientCodeBtn" Height="20" VerticalAlignment="Top" Width="30" Click="genClientCodeBtn_Click" ToolTip="生成客户端代码" Style="{StaticResource ToolBtnStyle}">
+                <Image Source="images/client.png"/>
+            </Button>
+            <Button x:Name="genServerCodeBtn" Height="20" VerticalAlignment="Top" Width="30" Click="genServerCodeBtn_Click" ToolTip="生成服务器代码" Style="{StaticResource ToolBtnStyle}">
+                <Image Source="images/server.png"/>
+            </Button>
+            <Separator Height="20" VerticalAlignment="Top" Width="20" Background="{x:Null}"/>
             <Menu x:Name="menu" Background="{x:Null}" Height="20" VerticalAlignment="Top" Width="41">
-                <MenuItem Background="{x:Null}" Header="  ..." Margin="0" Width="41">
+                <MenuItem Background="{x:Null}" Header="帮助  ..." Margin="0" Width="41"  Height="20">
                     <MenuItem Background="{x:Null}" Header="增加分组    CTRL+1"/>
                     <MenuItem Background="{x:Null}" Header="增加消息    CTRL+2"/>
                     <MenuItem Background="{x:Null}" Header="增加结构    CTRL+3"/>
@@ -140,8 +163,6 @@
                     <MenuItem Background="{x:Null}" Header="刷       新    F5"/>
                     <MenuItem Background="{x:Null}" Header="删       除    DEL"/>
                     <MenuItem Background="{x:Null}" Header="保       存    CTRL+S"/>
-                    <Separator/>
-                    <MenuItem Background="{x:Null}" Header="By lg"/>
                 </MenuItem>
             </Menu>
         </ToolBar>

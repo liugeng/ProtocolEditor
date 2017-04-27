@@ -50,10 +50,10 @@ namespace ProtocolEditor
         const int TabTypeDefine = 0;
         const int TabTypeClass = 1;
 
-        Brush gColor = new SolidColorBrush(Colors.LightSeaGreen);// DarkSlateGray);
+        Brush gColor = new SolidColorBrush(Colors.LightSeaGreen);
         Brush mColor = new SolidColorBrush(Colors.DodgerBlue);
         Brush msColor = new SolidColorBrush(Colors.DeepSkyBlue);
-        Brush vColor = new SolidColorBrush(Colors.Crimson);
+        Brush vColor = new SolidColorBrush(Colors.DarkSlateGray); //Crimson);
 
         string[] baseVarTypes = { "bool", "byte", "short", "int", "long", "float", "String"};
 
@@ -686,7 +686,7 @@ namespace ProtocolEditor
                 comment = ""
             };
 
-            TreeViewItem item = new TreeViewItem()
+            TreeViewItem cItem = new TreeViewItem()
             {
                 Header = c.header,
                 IsExpanded = true,
@@ -700,7 +700,7 @@ namespace ProtocolEditor
                 }
             };
 
-            c.item = item;
+            c.item = cItem;
 
             ComboBoxItem boxItem = new ComboBoxItem()
             {
@@ -712,7 +712,7 @@ namespace ProtocolEditor
             if (arg == null)
             {
                 cfg.classes.Add(c);
-                treeView1.Items.Add(item);
+                treeView1.Items.Add(cItem);
                 vtypeComboBox.Items.Add(boxItem);
             }
             else
@@ -729,10 +729,10 @@ namespace ProtocolEditor
 
                 int idx = cfg.classes.IndexOf(selc);
                 cfg.classes.Insert(idx + 1, c);
-                treeView1.Items.Insert(idx + 1, item);
+                treeView1.Items.Insert(idx + 1, cItem);
                 vtypeComboBox.Items.Insert(baseVarTypes.Length + idx + 1, boxItem);
             }
-            
+
             changed();
         }
 
@@ -853,7 +853,6 @@ namespace ProtocolEditor
                     parent.vars.Insert(idx, v);
                     parent.item.Items.Insert(idx, vItem);
                 }
-
             }
 
             changed();
@@ -959,6 +958,8 @@ namespace ProtocolEditor
                 default:
                     break;
             }
+
+            changed();
         }
 
         private void upBtn_Click(object sender, RoutedEventArgs e)
@@ -971,7 +972,7 @@ namespace ProtocolEditor
             changeOrder(false);
         }
 
-        private void genCode(string pythonFile)
+        private void genCode(string pythonFile, string tips)
         {
             if (saveBtn.IsEnabled)
             {
@@ -989,7 +990,7 @@ namespace ProtocolEditor
                     scope.SetVariable("jsonFile", Properties.Settings.Default.configPath + "\\ProtocolEditor.Msg.json");
                     source.Execute(scope);
                     Console.ReadLine();
-                    MessageBox.Show("生成成功");
+                    MessageBox.Show(tips, "生成成功");
                 }
                 catch (Exception ex)
                 {
@@ -1001,12 +1002,12 @@ namespace ProtocolEditor
 
         private void genClientCodeBtn_Click(object sender, RoutedEventArgs e)
         {
-            genCode("ProtocolEditor.Client.py");
+            genCode("ProtocolEditor.Client.py", "客户端代码生成成功");
         }
 
         private void genServerCodeBtn_Click(object sender, RoutedEventArgs e)
         {
-            genCode("ProtocolEditor.Server.py");
+            genCode("ProtocolEditor.Server.py", "服务器代码生成成功");
         }
 
         private void settingBtn_Click(object sender, RoutedEventArgs e)
