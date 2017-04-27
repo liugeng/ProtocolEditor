@@ -152,8 +152,13 @@
                 <Image Source="images/server.png"/>
             </Button>
             <Separator Height="20" VerticalAlignment="Top" Width="20" Background="{x:Null}"/>
-            <Menu x:Name="menu" Background="{x:Null}" Height="20" VerticalAlignment="Top" Width="41">
-                <MenuItem Background="{x:Null}" Header="帮助  ..." Margin="0" Width="41"  Height="20">
+            <Menu x:Name="menu" Background="{x:Null}" Height="20" VerticalAlignment="Top" Width="30">
+                <MenuItem Background="{x:Null}" Header="" VerticalAlignment="Top" Width="30">
+                    <MenuItem.Icon>
+                        <StackPanel>
+                            <Image Source="images/help.png" Height="20" Margin="3,-1,0,0"/>
+                        </StackPanel>
+                    </MenuItem.Icon>
                     <MenuItem Background="{x:Null}" Header="增加分组    CTRL+1"/>
                     <MenuItem Background="{x:Null}" Header="增加消息    CTRL+2"/>
                     <MenuItem Background="{x:Null}" Header="增加结构    CTRL+3"/>
@@ -166,8 +171,8 @@
                 </MenuItem>
             </Menu>
         </ToolBar>
-        <Button x:Name="expandAllBtn" Content="- 展开全部" Margin="0,0,308,3" Grid.RowSpan="2" Click="expandAllBtn_Click" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75"/>
-        <Button x:Name="unexpandAllBtn" Content="+ 收缩全部" Margin="0,0,182,3" Grid.RowSpan="2" Click="unexpandAllBtn_Click" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75"/>
+        <Button x:Name="expandAllBtn" Content="- 展开全部" Margin="0,0,308,3" Grid.RowSpan="2" Click="expandAllBtn_Click" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Background="{x:Null}"/>
+        <Button x:Name="unexpandAllBtn" Content="+ 收缩全部" Margin="0,0,182,3" Grid.RowSpan="2" Click="unexpandAllBtn_Click" Height="22" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Background="{x:Null}"/>
         <Label x:Name="label" Content="搜索ID" Margin="0,29,134,0" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="47"/>
         <Label x:Name="label_Copy" Content="搜索名字" Margin="0,68,124,0" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="58"/>
         <Label x:Name="nameLabel" Content="名字" Margin="0,126,148,0" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right" Width="34"/>

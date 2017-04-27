@@ -387,6 +387,15 @@ namespace ProtocolEditor
             //Console.WriteLine("tabControl_SelectionChanged");
 
             refreshShowHide();
+
+            TreeViewItem selectedItem = (TreeViewItem)getCurTreeView().SelectedItem;
+            if (selectedItem != null)
+            {
+                selectedItem.Focus();
+                //触发一下treeView_SelectedItemChanged
+                selectedItem.IsSelected = false;
+                selectedItem.IsSelected = true;
+            }
         }
 
         private void treeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -452,6 +461,10 @@ namespace ProtocolEditor
                             if (tabControl.SelectedIndex == TabTypeClass)
                             {
                                 item.IsEnabled = (item.Content as string) != className;
+                            }
+                            else
+                            {
+                                item.IsEnabled = true;
                             }
                         }
                         break;
