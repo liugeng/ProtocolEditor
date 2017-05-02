@@ -1416,18 +1416,17 @@ namespace ProtocolEditor
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            //save
-            if (check(Key.LeftCtrl) && check(Key.S))
+            if (check(Key.LeftCtrl) || check(Key.RightCtrl))
             {
-                if (saveBtn.IsEnabled)
+                if (check(Key.S))
                 {
-                    parser.saveToFile(cfg);
-                    saveBtn.IsEnabled = false;
+                    if (saveBtn.IsEnabled)
+                    {
+                        parser.saveToFile(cfg);
+                        saveBtn.IsEnabled = false;
+                    }
                 }
-            }
-            else if (check(Key.LeftCtrl) || check(Key.RightCtrl))
-            {
-                if (check(Key.D1))
+                else if (check(Key.D1))
                 {
                     if (addNameSpaceBtn.IsEnabled)
                     {
@@ -1453,6 +1452,17 @@ namespace ProtocolEditor
                     if (addVarBtn.IsEnabled)
                     {
 	                    addVarBtn_Click(null, null);
+                    }
+                }
+                else if (check(Key.F))
+                {
+                    if (searchIdTextBox.IsEnabled)
+                    {
+                        searchIdTextBox.Focus();
+                    }
+                    else
+                    {
+                        searchNameTextBox.Focus();
                     }
                 }
             }
