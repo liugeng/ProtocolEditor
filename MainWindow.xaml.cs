@@ -63,6 +63,9 @@ namespace ProtocolEditor
             InitializeComponent();
             refreshing = false;
 
+            this.Left = (SystemParameters.PrimaryScreenWidth - this.Width) * 0.5;
+            this.Top = (SystemParameters.PrimaryScreenHeight - this.Height) * 0.5;
+
             saveBtn.IsEnabled = false;
 
             refreshShowHide();
