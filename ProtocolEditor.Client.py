@@ -8,6 +8,7 @@ classFileName       = 'Net_Classes.bolos'
 dispatcherName      = 'Net_Dispatcher.bolos'
 handleFileName      = 'Net_Handle_{0}_{1}'
 senderFileName      = 'Net_Send_{0}.bolos'
+debugFileName       = 'Net_Debug_{0}.bolos'
 
 header1     = '/******************************************************************************\n'
 header2     = u'* 由ProtocolEditor工具自动生成'.encode('utf-8')
@@ -39,8 +40,11 @@ if not isIronPy:
         os.mkdir(output)
     jsonFile = './ProtocolEditor.Msg.json'
 
+if not vars().has_key('genDumpCode'):
+    genDumpCode = False
 
 
+print(jsonFile)
 fp = open(jsonFile, 'r')
 cfg = json.loads(fp.read())
 fp.close()
@@ -138,16 +142,18 @@ def getClass(name):
     return None
 
 
-def writeVar(fp, vtype, name, isArr, isClass, t):
+def writeVar(fp, vtype, name, isArr, isClass, t, arrLenType):
     global iterIdx
     if isArr:
         it = iters[iterIdx]
         iterIdx += 1
-        fp.write('{0}buf.writeInt(arrayLen({1}));\n'
+        
+        fp.write('{0}buf.{4}(arrayLen({1}));\n'
                  '{0}for (int {2} = 0; {2} < arrayLen({1}); {2}++) {{\n'
                  '{0}    {3} tmp = {1}[{2}];\n'
-                 .format(t, name, it, vtype))
-        writeVar(fp, vtype, "tmp", False, isClass, t+tab)
+                 .format(t, name, it, vtype,
+                         arrLenType=='int' and 'writeInt' or 'writeShort'))
+        writeVar(fp, vtype, "tmp", False, isClass, t+tab, "")
         fp.write(t + '}\n')
     elif vtype == 'int':
         fp.write(t + 'buf.writeInt(' + name + ');\n')
@@ -166,11 +172,12 @@ def writeVar(fp, vtype, name, isArr, isClass, t):
     elif isClass:
         c = getClass(vtype)
         for v in c['vars']:
-            writeVar(fp, v['type'], name+'.'+v['name'], v['isArray'], v['isClass'], t)
+            writeVar(fp, v['type'], name+'.'+v['name'], v['isArray'], v['isClass'], t, v['arrLenType'])
 
 
 #生成发送函数文件
 def genSenderFile():
+    global iterIdx;
     for g in cfg['groups']:
         fp = open(os.path.join(output, senderFileName.format(g['name'])), 'w')
         fp.write(header1)
@@ -204,7 +211,8 @@ def genSenderFile():
                      .format(m['id']))
 
             for v in m['vars']:
-                writeVar(fp, v['type'], v['name'], v['isArray'], v['isClass'], tab)
+                iterIdx = 0
+                writeVar(fp, v['type'], v['name'], v['isArray'], v['isClass'], tab, v['arrLenType'])
                 
             fp.write('\n'
                      '    @GameMain.send(buf);\n'
@@ -213,7 +221,7 @@ def genSenderFile():
 
 
 
-def readVar(fp, vtype, name, isArr, isClass, t):
+def readVar(fp, vtype, name, isArr, isClass, t, arrLenType):
     global iterIdx
     typeStr = ''
     if name.find('.') < 0:
@@ -229,7 +237,10 @@ def readVar(fp, vtype, name, isArr, isClass, t):
 
         pos = name.find('.')
         lenVar = name[pos+1:] + 'Len' + it.upper()
-        fp.write(t + 'int '+lenVar+' = buf.readInt();\n')
+        if arrLenType == 'int':
+            fp.write(t + 'int '+lenVar+' = buf.readInt();\n')
+        else:
+            fp.write(t + 'short '+lenVar+' = buf.readShort();\n')
         
         if isClass:
             if name.find('.') > 0:
@@ -239,7 +250,7 @@ def readVar(fp, vtype, name, isArr, isClass, t):
         else:
             fp.write('{0}{1}{2} = new {3}[{4}];\n'.format(t, typeStr, name, vtype, lenVar))
         fp.write(t + 'for (int '+it+' = 0; '+it+' < '+lenVar+'; '+it+'++) {\n')
-        readVar(fp, vtype, 'tmp'+it, False, isClass, t+tab)
+        readVar(fp, vtype, 'tmp'+it, False, isClass, t+tab, "")
         fp.write(t + tab + name+'['+it+'] = tmp'+it+';\n')
         fp.write(t + '}\n')
     elif vtype == 'int':
@@ -260,7 +271,7 @@ def readVar(fp, vtype, name, isArr, isClass, t):
         c = getClass(vtype)
         fp.write('{0}{1}{2} = new {3}();\n'.format(t, typeStr, name, vtype))
         for v in c['vars']:
-            readVar(fp, v['type'], name+'.'+v['name'], v['isArray'], v['isClass'], t)
+            readVar(fp, v['type'], name+'.'+v['name'], v['isArray'], v['isClass'], t, v['arrLenType'])
 
             
 def genHandleFunc(fp, m):
@@ -274,15 +285,64 @@ def genHandleFunc(fp, m):
         fp.write(T(v, True) + ' ' + v['name'])
     fp.write(') {\n')
 
+
+lenVarIdx = 1
+def dumpVar(fp, name, vtype, isArr, isClass, t):
+    global iterIdx
+    global lenVarIdx
+
+    rawName = name
+    pos = name.rfind('.')
+    if pos > 0:
+        rawName = name[pos+1:]
+    
+    if isArr:
+        it = iters[iterIdx]
+        iterIdx += 1
+
+        lenVar = 'len' + str(lenVarIdx)
+        lenVarIdx += 1
+
+        fp.write(('{0}int {1} = arrayLen({2});\n'
+                  '{0}print("{2} len: " + {1});\n'
+                  '{0}for (int {3} = 0; {3} < {1}; {3}++) {{\n')
+                  .format(t, lenVar, name, it))
+        if isClass:
+            tmpName = 'tmp'+it.upper()
+            fp.write(t + tab + '{0} {1} = {2}[{3}];\n'.format(vtype, tmpName, name, it))
+            dumpVar(fp, tmpName, vtype, False, isClass, t + tab)
+        else:
+            dumpVar(fp, name+'['+it+']', vtype, False, isClass, t + tab)
+        fp.write(t + '};\n')
+    elif isClass:
+        c = getClass(vtype)
+        for v in c['vars']:
+            dumpVar(fp, name + '.' + v['name'], v['type'], v['isArray'], v['isClass'], t)
+    else:
+        fp.write('{0}print("{0}{1}: " + {2});\n'.format(t, rawName, name))
+
+
 def genParseFunc(fp, m):
     global iterIdx
+    global lenVarIdx
     fp.write('void parse() {\n')
     if len(m['vars']) > 0:
         fp.write(tab+'BoloData buf = load();\n')
         for v in m['vars']:
             iterIdx = 0
-            readVar(fp, v['type'], v['name'], v['isArray'], v['isClass'], tab)
+            readVar(fp, v['type'], v['name'], v['isArray'], v['isClass'], tab, v['arrLenType'])
         fp.write('\n')
+
+        if genDumpCode:
+            iterIdx = 0
+            lenVarIdx = 1
+            fp.write(tab + '//dump\n')
+            fp.write(tab + '/*\n')
+            fp.write(tab + 'print("Dump Protocol: ' + m['name'] + '");\n')
+            for v in m['vars']:
+                dumpVar(fp, v['name'], v['type'], v['isArray'], v['isClass'], tab)
+            fp.write(tab + '*/\n\n')
+   
     fp.write(tab+'handle(')
     
     firstOne = True
@@ -337,7 +397,52 @@ def genHandleFile():
         if os.path.exists(tmpPath):
             os.remove(tmpPath)
 
+def genDebugFile():
+    global iterIdx
+    for g in cfg['groups']:
+        fp = open(os.path.join(output, debugFileName.format(g['name'])), 'w')
+        fp.write(header1)
+        fp.write(header2 + u'，仅用于测试'.encode('utf-8') + '\n')
+        fp.write('* [{0}]'.format(g['name']))
+        if g['comment'] != '':
+            fp.write(Comment(g))
+        fp.write('\n')
+        fp.write(header4)
+
+        for m in g['msgs']:
+            if m['type'] != 'SC':
+                continue
+            fp.write('\n')
+
+            if m['comment'] != '':
+                fp.write('//' + Comment(m) + '\n')
+                
+            fp.write('void DebugSend_{0}_{1}('.format(g['name'], m['name']))
+            firstOne = True
+            for v in m['vars']:
+                if firstOne:
+                    firstOne = False
+                else:
+                    fp.write(', ')
+                fp.write(T(v, True) + ' ' + v['name'])
+                
+            fp.write(') {{\n'
+                     '    BoloArray buf = new BoloArray();\n'
+                     '    buf.writeShort({0});\n'
+                     .format(m['id']))
+
+            for v in m['vars']:
+                iterIdx = 0
+                writeVar(fp, v['type'], v['name'], v['isArray'], v['isClass'], tab, v['arrLenType'])
+                
+            fp.write('\n'
+                     '    call("Net_dispatcher", 1, buf);\n'
+                     '}\n')
+        fp.close()
+        
+
 genClassFile()
 genDispatcherFile()
 genSenderFile()
 genHandleFile()
+genDebugFile()

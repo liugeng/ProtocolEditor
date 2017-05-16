@@ -142,6 +142,8 @@ namespace ProtocolEditor
                     }
                 };
 
+				
+
                 g.item = gItem;
                 treeView0.Items.Add(gItem);
 
@@ -374,6 +376,7 @@ namespace ProtocolEditor
             commentLabel.Visibility = commentTextBox.Visibility;
             msgAttrPanel.Visibility = (typeId == ItemType.Message ? Visibility.Visible : Visibility.Hidden);
             varAttrPanel.Visibility = (typeId == ItemType.Variable ? Visibility.Visible : Visibility.Hidden);
+			arrLenTypeComboBox.Visibility = ((typeId == ItemType.Variable) && ((item.Tag as TreeViewItemArg).data as Var).isArray) ? Visibility.Visible : Visibility.Hidden;
 
             addVarBtn.IsEnabled = (typeId != ItemType.None && typeId != ItemType.Group);
             addMsgBtn.IsEnabled = (typeId != ItemType.None && tabIdx == TabTypeDefine);
@@ -447,6 +450,15 @@ namespace ProtocolEditor
                         commentTextBox.Text = v.comment;
                         isArrayCheckBox.IsChecked = v.isArray;
                         vtypeComboBox.SelectedIndex = -1;
+
+						if (v.arrLenType == "int")
+						{
+							arrLenTypeComboBox.SelectedIndex = 0;
+						}
+						else
+						{
+							arrLenTypeComboBox.SelectedIndex = 1;
+						}
 
                         string className = "";
                         if (tabControl.SelectedIndex == TabTypeClass)
@@ -1052,6 +1064,10 @@ namespace ProtocolEditor
             TreeViewItem selectedItem = getSelectedItem();
             Var v = ((selectedItem.Tag as TreeViewItemArg).data as Var);
             v.isArray = true;
+
+			arrLenTypeComboBox.Visibility = Visibility.Visible;
+			v.arrLenType = "int";
+
             selectedItem.Header = v.header;
 
             changed();
@@ -1067,6 +1083,9 @@ namespace ProtocolEditor
             TreeViewItem selectedItem = getSelectedItem();
             Var v = ((selectedItem.Tag as TreeViewItemArg).data as Var);
             v.isArray = false;
+
+			arrLenTypeComboBox.Visibility = Visibility.Hidden;
+
             selectedItem.Header = v.header;
 
             changed();
@@ -1412,7 +1431,35 @@ namespace ProtocolEditor
             }
         }
 
-        private bool check(Key key)
+		private void arrLenTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (refreshing)
+			{
+				return;
+			}
+
+			object data = getSelectedData();
+			if (data == null || !(data is Var))
+			{
+				return;
+			}
+
+			Var v = (Var)data;
+			if (arrLenTypeComboBox.SelectedIndex == 0)
+			{
+				v.arrLenType = "int";
+			}
+			else
+			{
+				v.arrLenType = "short";
+			}
+
+			v.item.Header = v.header;
+
+			changed();
+		}
+
+		private bool check(Key key)
         {
             return Keyboard.IsKeyDown(key);
         }
@@ -1482,7 +1529,10 @@ namespace ProtocolEditor
             }
             else if (check(Key.Delete))
             {
-                delBtn_Click(null, null);
+				if (treeView0.IsFocused || treeView1.IsFocused)
+				{
+					delBtn_Click(null, null);
+				}
             }
             else if (check(Key.F5))
             {
@@ -1491,5 +1541,5 @@ namespace ProtocolEditor
                 createTree();
             }
         }
-    }
+	}
 }

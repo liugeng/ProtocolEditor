@@ -29,7 +29,27 @@ namespace ProtocolEditor
         [DataMember(Order = 4)]
         public String comment;
 
-        [IgnoreDataMember]
+		[DataMember(Order = 5)]
+		public String arrLenType
+		{
+			get
+			{
+				if (_arrLenType == null || _arrLenType == "")
+				{
+					_arrLenType = "int";
+				}
+				return _arrLenType;
+			}
+			set
+			{
+				_arrLenType = value;
+			}
+		}
+
+		[IgnoreDataMember]
+		private String _arrLenType;
+
+		[IgnoreDataMember]
         public String header
         {
             get
@@ -37,7 +57,11 @@ namespace ProtocolEditor
                 String str = type;
                 if (isArray)
                 {
-                    str += "[]";
+					if (arrLenType == null || arrLenType == "")
+					{
+						arrLenType = "int";
+					}
+                    str += "[ " + arrLenType + " ]";
                 }
 
                 str += " ";

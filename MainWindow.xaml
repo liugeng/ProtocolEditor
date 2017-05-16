@@ -63,7 +63,7 @@
                     <TreeView x:Name="treeView0" IsTextSearchEnabled="True" SelectedItemChanged="treeView_SelectedItemChanged" BorderThickness="0" AllowDrop="True" MouseDoubleClick="treeView_MouseDoubleClick">
                         <TreeView.Resources>
                             <Style TargetType="{x:Type TreeViewItem}"
-                       BasedOn="{StaticResource AeroTreeStyle}"/>
+                                      BasedOn="{StaticResource AeroTreeStyle}"/>
                         </TreeView.Resources>
                     </TreeView>
                 </Grid>
@@ -92,6 +92,10 @@
         </Grid>
         <Grid x:Name="varAttrPanel" Height="127" Margin="0,322,10,0" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Width="167">
             <CheckBox x:Name="isArrayCheckBox" Content="是否是数组" Margin="1,20,85,0" VerticalAlignment="Top" Checked="isArrayCheckBox_Checked" Unchecked="isArrayCheckBox_Unchecked"/>
+            <ComboBox x:Name="arrLenTypeComboBox" HorizontalAlignment="Left" Margin="82,17,0,0" VerticalAlignment="Top" Width="85" SelectedIndex="0" SelectionChanged="arrLenTypeComboBox_SelectionChanged">
+                <ComboBoxItem Content="长度 int"/>
+                <ComboBoxItem Content="长度 short"/>
+            </ComboBox>
             <Label x:Name="label5" Content="变量类型" HorizontalAlignment="Left" Margin="-3,45,0,0" VerticalAlignment="Top"/>
             <ComboBox x:Name="vtypeComboBox" HorizontalAlignment="Left" Margin="1,0,0,35" Width="166" Height="24" VerticalAlignment="Bottom" SelectedIndex="2" SelectionChanged="vtypeComboBox_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Visible">
                 <ComboBoxItem Content="byte"/>
@@ -148,7 +152,7 @@
             <Button x:Name="genClientCodeBtn" Height="20" VerticalAlignment="Top" Width="30" Click="genClientCodeBtn_Click" ToolTip="生成客户端代码" Style="{StaticResource ToolBtnStyle}">
                 <Image Source="images/client.png"/>
             </Button>
-            <Button x:Name="genServerCodeBtn" Height="20" VerticalAlignment="Top" Width="30" Click="genServerCodeBtn_Click" ToolTip="生成服务器代码" Style="{StaticResource ToolBtnStyle}">
+            <Button x:Name="genServerCodeBtn" Height="20" VerticalAlignment="Top" Width="30" Click="genServerCodeBtn_Click" ToolTip="生成服务器代码" Style="{StaticResource ToolBtnStyle}" IsEnabled="False">
                 <Image Source="images/server.png"/>
             </Button>
             <Separator Height="20" VerticalAlignment="Top" Width="20" Background="{x:Null}"/>
