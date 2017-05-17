@@ -1,0 +1,591 @@
+{
+  "classes": [
+    {
+      "name": "SummonInfo",
+      "comment": "宝箱功能的基本信息",
+      "vars": [
+        {
+          "name": "summonType",
+          "type": "String",
+          "isArray": false,
+          "isClass": false,
+          "comment": "召唤类型",
+          "arrLenType": "int"
+        },
+        {
+          "name": "currentCount",
+          "type": "int",
+          "isArray": false,
+          "isClass": false,
+          "comment": "当前免费抽取次数",
+          "arrLenType": "int"
+        },
+        {
+          "name": "currentRewardGetCount",
+          "type": "int",
+          "isArray": false,
+          "isClass": false,
+          "comment": "当前奖励获得次数",
+          "arrLenType": "int"
+        },
+        {
+          "name": "oneCallPrice",
+          "type": "int",
+          "isArray": false,
+          "isClass": false,
+          "comment": "召唤一次价格",
+          "arrLenType": "int"
+        },
+        {
+          "name": "tenCallPrice",
+          "type": "int",
+          "isArray": false,
+          "isClass": false,
+          "comment": "召唤十次价格",
+          "arrLenType": "int"
+        },
+        {
+          "name": "tenCallPrePrice",
+          "type": "int",
+          "isArray": false,
+          "isClass": false,
+          "comment": "召唤十次原价",
+          "arrLenType": "int"
+        },
+        {
+          "name": "isFreeCall",
+          "type": "byte",
+          "isArray": false,
+          "isClass": false,
+          "comment": "是否可以免费召唤",
+          "arrLenType": "int"
+        },
+        {
+          "name": "lastFreeCallTime",
+          "type": "String",
+          "isArray": false,
+          "isClass": false,
+          "comment": "上次免费召唤毫秒数",
+          "arrLenType": "int"
+        },
+        {
+          "name": "freeCallCd",
+          "type": "int",
+          "isArray": false,
+          "isClass": false,
+          "comment": "免费召唤cd总时间，分",
+          "arrLenType": "int"
+        }
+      ]
+    },
+    {
+      "name": "RandSoulGood",
+      "comment": "物品信息",
+      "vars": [
+        {
+          "name": "resType",
+          "type": "byte",
+          "isArray": false,
+          "isClass": false,
+          "comment": "资源类型",
+          "arrLenType": "int"
+        },
+        {
+          "name": "count",
+          "type": "int",
+          "isArray": false,
+          "isClass": false,
+          "comment": "",
+          "arrLenType": "int"
+        },
+        {
+          "name": "price",
+          "type": "int",
+          "isArray": false,
+          "isClass": false,
+          "comment": "",
+          "arrLenType": "int"
+        },
+        {
+          "name": "canBuy",
+          "type": "bool",
+          "isArray": false,
+          "isClass": false,
+          "comment": "",
+          "arrLenType": "int"
+        },
+        {
+          "name": "curBuyCount",
+          "type": "int",
+          "isArray": false,
+          "isClass": false,
+          "comment": "",
+          "arrLenType": "int"
+        },
+        {
+          "name": "maxBuyCount",
+          "type": "int",
+          "isArray": false,
+          "isClass": false,
+          "comment": "",
+          "arrLenType": "int"
+        }
+      ]
+    },
+    {
+      "name": "RandSoulRowInfo",
+      "comment": "随机将魂一格的信息",
+      "vars": [
+        {
+          "name": "heroId",
+          "type": "String",
+          "isArray": false,
+          "isClass": false,
+          "comment": "",
+          "arrLenType": "int"
+        },
+        {
+          "name": "infos",
+          "type": "RandSoulGood",
+          "isArray": true,
+          "isClass": true,
+          "comment": "",
+          "arrLenType": "int"
+        }
+      ]
+    },
+    {
+      "name": "ResourceInfo",
+      "comment": "开出的物品信息",
+      "vars": [
+        {
+          "name": "type",
+          "type": "byte",
+          "isArray": false,
+          "isClass": false,
+          "comment": "资源id",
+          "arrLenType": "int"
+        },
+        {
+          "name": "count",
+          "type": "int",
+          "isArray": false,
+          "isClass": false,
+          "comment": "资源数量",
+          "arrLenType": "int"
+        },
+        {
+          "name": "heroId",
+          "type": "String",
+          "isArray": false,
+          "isClass": false,
+          "comment": "将魂碎片对应的英雄id",
+          "arrLenType": "int"
+        }
+      ]
+    },
+    {
+      "name": "TestClass1",
+      "comment": "",
+      "vars": [
+        {
+          "name": "arr",
+          "type": "int",
+          "isArray": true,
+          "isClass": false,
+          "comment": "",
+          "arrLenType": "int"
+        }
+      ]
+    },
+    {
+      "name": "TestClass2",
+      "comment": "",
+      "vars": [
+        {
+          "name": "arr",
+          "type": "TestClass1",
+          "isArray": true,
+          "isClass": true,
+          "comment": "",
+          "arrLenType": "short"
+        }
+      ]
+    },
+    {
+      "name": "TestClass3",
+      "comment": "",
+      "vars": [
+        {
+          "name": "arr",
+          "type": "TestClass2",
+          "isArray": true,
+          "isClass": true,
+          "comment": "",
+          "arrLenType": "int"
+        }
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "name": "OpenChest",
+      "comment": "开宝箱",
+      "msgs": [
+        {
+          "name": "ChestInfo",
+          "id": "0x0001",
+          "type": "CS",
+          "comment": "请求宝箱信息",
+          "vars": []
+        },
+        {
+          "name": "ChestInfo",
+          "id": "0x0002",
+          "type": "SC",
+          "comment": "返回宝箱的信息",
+          "vars": [
+            {
+              "name": "refreshTimeLeft",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "随机列表的剩余刷新时间，秒",
+              "arrLenType": "int"
+            },
+            {
+              "name": "rowInfos",
+              "type": "RandSoulRowInfo",
+              "isArray": true,
+              "isClass": true,
+              "comment": "左侧列表中的随机将魂",
+              "arrLenType": "int"
+            },
+            {
+              "name": "sumInfo",
+              "type": "SummonInfo",
+              "isArray": false,
+              "isClass": true,
+              "comment": "右侧召唤信息",
+              "arrLenType": "int"
+            }
+          ]
+        },
+        {
+          "name": "BuySoul",
+          "id": "0x0003",
+          "type": "CS",
+          "comment": "购买列表中的将魂",
+          "vars": [
+            {
+              "name": "idx",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            },
+            {
+              "name": "type",
+              "type": "byte",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            },
+            {
+              "name": "count",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            },
+            {
+              "name": "price",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            }
+          ]
+        },
+        {
+          "name": "BuySoulResult",
+          "id": "0x0004",
+          "type": "SC",
+          "comment": "购买将魂结果",
+          "vars": []
+        },
+        {
+          "name": "DoCall",
+          "id": "0x0005",
+          "type": "CS",
+          "comment": "召唤",
+          "vars": [
+            {
+              "name": "isFree",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "是否免费召唤",
+              "arrLenType": "int"
+            },
+            {
+              "name": "summonType",
+              "type": "String",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            },
+            {
+              "name": "callType",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "召唤类型，0一次 1十次",
+              "arrLenType": "int"
+            }
+          ]
+        },
+        {
+          "name": "CallResult",
+          "id": "0x0006",
+          "type": "SC",
+          "comment": "召唤结果",
+          "vars": [
+            {
+              "name": "awardType",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "召唤的类型",
+              "arrLenType": "int"
+            },
+            {
+              "name": "fixedResType",
+              "type": "byte",
+              "isArray": false,
+              "isClass": false,
+              "comment": "固定奖励的类型",
+              "arrLenType": "int"
+            },
+            {
+              "name": "fixedResCount",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "固定奖励的数量",
+              "arrLenType": "int"
+            },
+            {
+              "name": "awards",
+              "type": "ResourceInfo",
+              "isArray": true,
+              "isClass": true,
+              "comment": "奖励",
+              "arrLenType": "int"
+            },
+            {
+              "name": "extraAwards",
+              "type": "ResourceInfo",
+              "isArray": true,
+              "isClass": true,
+              "comment": "额外奖励",
+              "arrLenType": "int"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Login",
+      "comment": "登录",
+      "msgs": [
+        {
+          "name": "LoginReq",
+          "id": "0x0007",
+          "type": "CS",
+          "comment": "",
+          "vars": [
+            {
+              "name": "username",
+              "type": "String",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            },
+            {
+              "name": "pwd",
+              "type": "String",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            }
+          ]
+        },
+        {
+          "name": "LoginResult",
+          "id": "0x0008",
+          "type": "SC",
+          "comment": "",
+          "vars": [
+            {
+              "name": "isSuccess",
+              "type": "bool",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            },
+            {
+              "name": "bornX",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            },
+            {
+              "name": "bornY",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            },
+            {
+              "name": "mapId",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            },
+            {
+              "name": "mapName",
+              "type": "String",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TestView",
+      "comment": "测试",
+      "msgs": [
+        {
+          "name": "TestViewInfo",
+          "id": "0x000A",
+          "type": "CS",
+          "comment": "请求详情",
+          "vars": []
+        },
+        {
+          "name": "TestViewInfo",
+          "id": "0x0009",
+          "type": "SC",
+          "comment": "详情",
+          "vars": [
+            {
+              "name": "title",
+              "type": "String",
+              "isArray": false,
+              "isClass": false,
+              "comment": "标题",
+              "arrLenType": "int"
+            },
+            {
+              "name": "count",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "数量",
+              "arrLenType": "int"
+            },
+            {
+              "name": "price",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "价格",
+              "arrLenType": "int"
+            },
+            {
+              "name": "number",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            },
+            {
+              "name": "empty_var",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            },
+            {
+              "name": "arr1",
+              "type": "int",
+              "isArray": true,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "short"
+            },
+            {
+              "name": "arr2",
+              "type": "TestClass3",
+              "isArray": true,
+              "isClass": true,
+              "comment": "",
+              "arrLenType": "int"
+            }
+          ]
+        },
+        {
+          "name": "Empty_msg",
+          "id": "0x000B",
+          "type": "SC",
+          "comment": "",
+          "vars": [
+            {
+              "name": "empty_var",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            },
+            {
+              "name": "empty_var1",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            },
+            {
+              "name": "empty_var2",
+              "type": "int",
+              "isArray": false,
+              "isClass": false,
+              "comment": "",
+              "arrLenType": "int"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

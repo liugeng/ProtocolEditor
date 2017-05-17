@@ -149,10 +149,10 @@
                 <Image Source="images/delete.png" Width="16" Height="16"/>
             </Button>
             <Separator Height="20" VerticalAlignment="Top" Width="20" Background="{x:Null}"/>
-            <Button x:Name="genClientCodeBtn" Height="20" VerticalAlignment="Top" Width="30" Click="genClientCodeBtn_Click" ToolTip="生成客户端代码" Style="{StaticResource ToolBtnStyle}">
+            <Button x:Name="genClientCodeBtn" Height="20" VerticalAlignment="Top" Width="30" Click="genClientCodeBtn_Click" ToolTip="生成客户端全部代码" Style="{StaticResource ToolBtnStyle}">
                 <Image Source="images/client.png"/>
             </Button>
-            <Button x:Name="genServerCodeBtn" Height="20" VerticalAlignment="Top" Width="30" Click="genServerCodeBtn_Click" ToolTip="生成服务器代码" Style="{StaticResource ToolBtnStyle}" IsEnabled="False">
+            <Button x:Name="genServerCodeBtn" Height="20" VerticalAlignment="Top" Width="30" Click="genServerCodeBtn_Click" ToolTip="生成服务器全部代码" Style="{StaticResource ToolBtnStyle}" IsEnabled="False">
                 <Image Source="images/server.png"/>
             </Button>
             <Separator Height="20" VerticalAlignment="Top" Width="20" Background="{x:Null}"/>

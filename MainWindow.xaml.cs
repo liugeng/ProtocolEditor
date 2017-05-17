@@ -40,6 +40,8 @@ namespace ProtocolEditor
     /// </summary>
     public partial class MainWindow : Window
     {
+		public static MainWindow instance;
+
         ConfigParser parser;
         Config cfg;
         bool refreshing = false;
@@ -59,6 +61,8 @@ namespace ProtocolEditor
 
         public MainWindow()
         {
+			instance = this;
+
             refreshing = true;
             InitializeComponent();
             refreshing = false;
@@ -129,7 +133,7 @@ namespace ProtocolEditor
 
             foreach (Group g in cfg.groups)
             {
-                TreeViewItem gItem = new TreeViewItem()
+                UITreeViewItem gItem = new UITreeViewItem(ItemType.Group)
                 {
                     Header = g.header,
                     FontSize = 14,
@@ -142,8 +146,6 @@ namespace ProtocolEditor
                     }
                 };
 
-				
-
                 g.item = gItem;
                 treeView0.Items.Add(gItem);
 
@@ -151,7 +153,7 @@ namespace ProtocolEditor
                 {
                     maxMsgId = Math.Max(maxMsgId, m.idValue);
 
-                    TreeViewItem mItem = new TreeViewItem()
+					UITreeViewItem mItem = new UITreeViewItem(ItemType.Message)
                     {
                         Header = m.header,
                         FontSize = 14,
@@ -170,7 +172,7 @@ namespace ProtocolEditor
 
                     foreach (Var v in m.vars)
                     {
-                        TreeViewItem vItem = new TreeViewItem()
+						UITreeViewItem vItem = new UITreeViewItem(ItemType.Variable)
                         {
                             Header = v.header,
                             FontSize = 14,
@@ -1000,7 +1002,7 @@ namespace ProtocolEditor
             changeOrder(false);
         }
 
-        private void genCode(string pythonFile, string tips)
+        public void genCode(string pythonFile, string tips, string args="")
         {
             if (saveBtn.IsEnabled)
             {
@@ -1016,6 +1018,10 @@ namespace ProtocolEditor
                 {
                     ScriptScope scope = engine.CreateScope();
                     scope.SetVariable("jsonFile", Properties.Settings.Default.configPath + "\\ProtocolEditor.Msg.json");
+					if (args != "")
+					{
+						scope.SetVariable("argstr", args);
+					}
                     source.Execute(scope);
                     Console.ReadLine();
                     MessageBox.Show(tips, "生成成功");

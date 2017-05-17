@@ -1,0 +1,19 @@
+﻿<TreeViewItem x:Class="ProtocolEditor.UITreeViewItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ProtocolEditor"
+             mc:Ignorable="d" 
+             Style="{StaticResource AeroTreeStyle}"
+             MouseRightButtonDown="treeViewItemRightMouseDown"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <TreeViewItem.ContextMenu>
+        <ContextMenu Name="contextMenu" Loaded="contextMenu_Loaded" >
+            <MenuItem Name="genGroup" Header="生成" Click="genGroup_Click"/>
+            <MenuItem Name="genDebug" Header="生成测试文件" Click="genDebug_Click"/>
+            <MenuItem Name="genMsg" Header="生成" Click="genMsg_Click"/>
+            <MenuItem Name="genMsgWithDump" Header="添加dump代码" Click="genMsgWithDump_Click"/>
+        </ContextMenu>
+    </TreeViewItem.ContextMenu>
+</TreeViewItem>
