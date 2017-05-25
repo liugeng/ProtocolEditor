@@ -2,14 +2,14 @@
   "classes": [
     {
       "name": "SummonInfo",
-      "comment": "å®ç®±åŠŸèƒ½çš„åŸºæœ¬ä¿¡æ¯",
+      "comment": "±¦Ïä¹¦ÄÜµÄ»ù±¾ĞÅÏ¢",
       "vars": [
         {
           "name": "summonType",
           "type": "String",
           "isArray": false,
           "isClass": false,
-          "comment": "å¬å”¤ç±»å‹",
+          "comment": "ÕÙ»½ÀàĞÍ",
           "arrLenType": "int"
         },
         {
@@ -17,7 +17,7 @@
           "type": "int",
           "isArray": false,
           "isClass": false,
-          "comment": "å½“å‰å…è´¹æŠ½å–æ¬¡æ•°",
+          "comment": "µ±Ç°Ãâ·Ñ³éÈ¡´ÎÊı",
           "arrLenType": "int"
         },
         {
@@ -25,7 +25,7 @@
           "type": "int",
           "isArray": false,
           "isClass": false,
-          "comment": "å½“å‰å¥–åŠ±è·å¾—æ¬¡æ•°",
+          "comment": "µ±Ç°½±Àø»ñµÃ´ÎÊı",
           "arrLenType": "int"
         },
         {
@@ -33,7 +33,7 @@
           "type": "int",
           "isArray": false,
           "isClass": false,
-          "comment": "å¬å”¤ä¸€æ¬¡ä»·æ ¼",
+          "comment": "ÕÙ»½Ò»´Î¼Û¸ñ",
           "arrLenType": "int"
         },
         {
@@ -41,7 +41,7 @@
           "type": "int",
           "isArray": false,
           "isClass": false,
-          "comment": "å¬å”¤åæ¬¡ä»·æ ¼",
+          "comment": "ÕÙ»½Ê®´Î¼Û¸ñ",
           "arrLenType": "int"
         },
         {
@@ -49,7 +49,7 @@
           "type": "int",
           "isArray": false,
           "isClass": false,
-          "comment": "å¬å”¤åæ¬¡åŸä»·",
+          "comment": "ÕÙ»½Ê®´ÎÔ­¼Û",
           "arrLenType": "int"
         },
         {
@@ -57,7 +57,7 @@
           "type": "byte",
           "isArray": false,
           "isClass": false,
-          "comment": "æ˜¯å¦å¯ä»¥å…è´¹å¬å”¤",
+          "comment": "ÊÇ·ñ¿ÉÒÔÃâ·ÑÕÙ»½",
           "arrLenType": "int"
         },
         {
@@ -65,7 +65,7 @@
           "type": "String",
           "isArray": false,
           "isClass": false,
-          "comment": "ä¸Šæ¬¡å…è´¹å¬å”¤æ¯«ç§’æ•°",
+          "comment": "ÉÏ´ÎÃâ·ÑÕÙ»½ºÁÃëÊı",
           "arrLenType": "int"
         },
         {
@@ -73,21 +73,21 @@
           "type": "int",
           "isArray": false,
           "isClass": false,
-          "comment": "å…è´¹å¬å”¤cdæ€»æ—¶é—´ï¼Œåˆ†",
+          "comment": "Ãâ·ÑÕÙ»½cd×ÜÊ±¼ä£¬·Ö",
           "arrLenType": "int"
         }
       ]
     },
     {
       "name": "RandSoulGood",
-      "comment": "ç‰©å“ä¿¡æ¯",
+      "comment": "ÎïÆ·ĞÅÏ¢",
       "vars": [
         {
           "name": "resType",
           "type": "byte",
           "isArray": false,
           "isClass": false,
-          "comment": "èµ„æºç±»å‹",
+          "comment": "×ÊÔ´ÀàĞÍ",
           "arrLenType": "int"
         },
         {
@@ -134,7 +134,7 @@
     },
     {
       "name": "RandSoulRowInfo",
-      "comment": "éšæœºå°†é­‚ä¸€æ ¼çš„ä¿¡æ¯",
+      "comment": "Ëæ»ú½«»êÒ»¸ñµÄĞÅÏ¢",
       "vars": [
         {
           "name": "heroId",
@@ -156,14 +156,14 @@
     },
     {
       "name": "ResourceInfo",
-      "comment": "å¼€å‡ºçš„ç‰©å“ä¿¡æ¯",
+      "comment": "¿ª³öµÄÎïÆ·ĞÅÏ¢",
       "vars": [
         {
           "name": "type",
           "type": "byte",
           "isArray": false,
           "isClass": false,
-          "comment": "èµ„æºid",
+          "comment": "×ÊÔ´id",
           "arrLenType": "int"
         },
         {
@@ -171,7 +171,7 @@
           "type": "int",
           "isArray": false,
           "isClass": false,
-          "comment": "èµ„æºæ•°é‡",
+          "comment": "×ÊÔ´ÊıÁ¿",
           "arrLenType": "int"
         },
         {
@@ -179,7 +179,7 @@
           "type": "String",
           "isArray": false,
           "isClass": false,
-          "comment": "å°†é­‚ç¢ç‰‡å¯¹åº”çš„è‹±é›„id",
+          "comment": "½«»êËéÆ¬¶ÔÓ¦µÄÓ¢ĞÛid",
           "arrLenType": "int"
         }
       ]
@@ -230,27 +230,27 @@
   "groups": [
     {
       "name": "OpenChest",
-      "comment": "å¼€å®ç®±",
+      "comment": "¿ª±¦Ïä",
       "msgs": [
         {
           "name": "ChestInfo",
           "id": "0x0001",
           "type": "CS",
-          "comment": "è¯·æ±‚å®ç®±ä¿¡æ¯",
+          "comment": "ÇëÇó±¦ÏäĞÅÏ¢",
           "vars": []
         },
         {
           "name": "ChestInfo",
           "id": "0x0002",
           "type": "SC",
-          "comment": "è¿”å›å®ç®±çš„ä¿¡æ¯",
+          "comment": "·µ»Ø±¦ÏäµÄĞÅÏ¢",
           "vars": [
             {
               "name": "refreshTimeLeft",
               "type": "int",
               "isArray": false,
               "isClass": false,
-              "comment": "éšæœºåˆ—è¡¨çš„å‰©ä½™åˆ·æ–°æ—¶é—´ï¼Œç§’",
+              "comment": "Ëæ»úÁĞ±íµÄÊ£ÓàË¢ĞÂÊ±¼ä£¬Ãë",
               "arrLenType": "int"
             },
             {
@@ -258,7 +258,7 @@
               "type": "RandSoulRowInfo",
               "isArray": true,
               "isClass": true,
-              "comment": "å·¦ä¾§åˆ—è¡¨ä¸­çš„éšæœºå°†é­‚",
+              "comment": "×ó²àÁĞ±íÖĞµÄËæ»ú½«»ê",
               "arrLenType": "int"
             },
             {
@@ -266,7 +266,7 @@
               "type": "SummonInfo",
               "isArray": false,
               "isClass": true,
-              "comment": "å³ä¾§å¬å”¤ä¿¡æ¯",
+              "comment": "ÓÒ²àÕÙ»½ĞÅÏ¢",
               "arrLenType": "int"
             }
           ]
@@ -275,7 +275,7 @@
           "name": "BuySoul",
           "id": "0x0003",
           "type": "CS",
-          "comment": "è´­ä¹°åˆ—è¡¨ä¸­çš„å°†é­‚",
+          "comment": "¹ºÂòÁĞ±íÖĞµÄ½«»ê",
           "vars": [
             {
               "name": "idx",
@@ -315,21 +315,21 @@
           "name": "BuySoulResult",
           "id": "0x0004",
           "type": "SC",
-          "comment": "è´­ä¹°å°†é­‚ç»“æœ",
+          "comment": "¹ºÂò½«»ê½á¹û",
           "vars": []
         },
         {
           "name": "DoCall",
           "id": "0x0005",
           "type": "CS",
-          "comment": "å¬å”¤",
+          "comment": "ÕÙ»½",
           "vars": [
             {
               "name": "isFree",
               "type": "int",
               "isArray": false,
               "isClass": false,
-              "comment": "æ˜¯å¦å…è´¹å¬å”¤",
+              "comment": "ÊÇ·ñÃâ·ÑÕÙ»½",
               "arrLenType": "int"
             },
             {
@@ -345,7 +345,7 @@
               "type": "int",
               "isArray": false,
               "isClass": false,
-              "comment": "å¬å”¤ç±»å‹ï¼Œ0ä¸€æ¬¡ 1åæ¬¡",
+              "comment": "ÕÙ»½ÀàĞÍ£¬0Ò»´Î 1Ê®´Î",
               "arrLenType": "int"
             }
           ]
@@ -354,14 +354,14 @@
           "name": "CallResult",
           "id": "0x0006",
           "type": "SC",
-          "comment": "å¬å”¤ç»“æœ",
+          "comment": "ÕÙ»½½á¹û",
           "vars": [
             {
               "name": "awardType",
               "type": "int",
               "isArray": false,
               "isClass": false,
-              "comment": "å¬å”¤çš„ç±»å‹",
+              "comment": "ÕÙ»½µÄÀàĞÍ",
               "arrLenType": "int"
             },
             {
@@ -369,7 +369,7 @@
               "type": "byte",
               "isArray": false,
               "isClass": false,
-              "comment": "å›ºå®šå¥–åŠ±çš„ç±»å‹",
+              "comment": "¹Ì¶¨½±ÀøµÄÀàĞÍ",
               "arrLenType": "int"
             },
             {
@@ -377,7 +377,7 @@
               "type": "int",
               "isArray": false,
               "isClass": false,
-              "comment": "å›ºå®šå¥–åŠ±çš„æ•°é‡",
+              "comment": "¹Ì¶¨½±ÀøµÄÊıÁ¿",
               "arrLenType": "int"
             },
             {
@@ -385,7 +385,7 @@
               "type": "ResourceInfo",
               "isArray": true,
               "isClass": true,
-              "comment": "å¥–åŠ±",
+              "comment": "½±Àø",
               "arrLenType": "int"
             },
             {
@@ -393,7 +393,7 @@
               "type": "ResourceInfo",
               "isArray": true,
               "isClass": true,
-              "comment": "é¢å¤–å¥–åŠ±",
+              "comment": "¶îÍâ½±Àø",
               "arrLenType": "int"
             }
           ]
@@ -403,7 +403,7 @@
     },
     {
       "name": "Login",
-      "comment": "ç™»å½•",
+      "comment": "µÇÂ¼",
       "msgs": [
         {
           "name": "LoginReq",
@@ -482,27 +482,27 @@
     },
     {
       "name": "TestView",
-      "comment": "æµ‹è¯•",
+      "comment": "²âÊÔ",
       "msgs": [
         {
           "name": "TestViewInfo",
           "id": "0x000A",
           "type": "CS",
-          "comment": "è¯·æ±‚è¯¦æƒ…",
+          "comment": "ÇëÇóÏêÇé",
           "vars": []
         },
         {
           "name": "TestViewInfo",
           "id": "0x0009",
           "type": "SC",
-          "comment": "è¯¦æƒ…",
+          "comment": "ÏêÇé",
           "vars": [
             {
               "name": "title",
               "type": "String",
               "isArray": false,
               "isClass": false,
-              "comment": "æ ‡é¢˜",
+              "comment": "±êÌâ",
               "arrLenType": "int"
             },
             {
@@ -510,7 +510,7 @@
               "type": "int",
               "isArray": false,
               "isClass": false,
-              "comment": "æ•°é‡",
+              "comment": "ÊıÁ¿",
               "arrLenType": "int"
             },
             {
@@ -518,7 +518,7 @@
               "type": "int",
               "isArray": false,
               "isClass": false,
-              "comment": "ä»·æ ¼",
+              "comment": "¼Û¸ñ",
               "arrLenType": "int"
             },
             {

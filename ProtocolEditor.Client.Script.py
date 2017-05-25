@@ -3,7 +3,7 @@
 #-------------------------------------------------------------------------------
 #setting
 
-output = r'..\..\BoloProj'
+output = r'..\..\artist\SpeedShark2Test\script'
 
 classFileName       = 'Net_Classes.bolos'
 dispatcherName      = 'Net_Dispatcher.bolos'
@@ -12,9 +12,11 @@ handleFileName      = 'Net_{0}_Handle.bolos'
 senderFileName      = 'Net_{0}_Send.bolos'
 debugFileName       = 'Net_{0}_Debug.bolos'
 
+fileCoding = 'gb2312'
+
 header1     = '/******************************************************************************\n'
-header2     = u'* 由ProtocolEditor工具自动生成'.encode('utf-8')
-header3     = u', 请勿手动修改'.encode('utf-8')
+header2     = u'* 由ProtocolEditor工具自动生成'.encode(fileCoding)
+header3     = u', 请勿手动修改'.encode(fileCoding)
 header4     = '******************************************************************************/\n'
 
 tab         = '    '
@@ -36,6 +38,7 @@ import os
 import json
 import filecmp
 import re
+import codecs
 
 
 if not isIronPy:
@@ -60,7 +63,10 @@ args = {
 '''
 
 print(jsonFile)
-fp = open(jsonFile, 'r')
+if not isIronPy:
+    fp = codecs.open(jsonFile, 'r', fileCoding)
+else:
+    fp = open(jsonFile, 'r')
 cfg = json.loads(fp.read())
 fp.close()
 
@@ -85,7 +91,7 @@ def Comment(t):
     if t['comment'] == '':
         return ''
     if not isIronPy:
-        return t['comment'].encode('utf-8')
+        return t['comment'].encode(fileCoding)
     return t['comment']
     
 def getClass(name):
@@ -138,7 +144,7 @@ def genDispatcherFile():
     fp = open(os.path.join(output, dispatcherName), 'w')
     fp.write(header1)
     fp.write(header2 + header3 + '\n')
-    fp.write(u'* 根据协议号分发协议到不同的函数处理\n'.encode('utf-8'))
+    fp.write(u'* 根据协议号分发协议到不同的函数处理\n'.encode(fileCoding))
     fp.write(header4 + '\n')
 
     for g in cfg['groups']:
@@ -330,7 +336,7 @@ def genHandleFile():
         if not os.path.exists(filepath):
             fp = open(filepath, 'w')
             fp.write(header1)
-            fp.write(header2 + u', 重新生成只会覆盖handle的参数列表'.encode('utf-8') + '\n')
+            fp.write(header2 + u', 重新生成只会覆盖handle的参数列表'.encode(fileCoding) + '\n')
             fp.write('* [{0}]'.format(g['name']))
             if g['comment'] != '':
                 fp.write(Comment(g))
@@ -598,7 +604,7 @@ def genDebugFile():
         
         fp = open(os.path.join(output, debugFileName.format(g['name'])), 'w')
         fp.write(header1)
-        fp.write(header2 + u'，仅用于测试'.encode('utf-8') + '\n')
+        fp.write(header2 + u'，仅用于测试'.encode(fileCoding) + '\n')
         fp.write('* [{0}]'.format(g['name']))
         if g['comment'] != '':
             fp.write(Comment(g))

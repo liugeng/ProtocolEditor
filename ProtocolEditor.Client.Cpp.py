@@ -3,7 +3,7 @@
 #-------------------------------------------------------------------------------
 #setting
 
-output = r'..\..\TestApp'
+output = r'..\..\client\dev\KhanMainSS2'
 
 dispatcher      = 'NetDispatcher'
 parser          = 'NetParser'
@@ -12,15 +12,11 @@ sender          = 'NetSender'
 classes         = 'NetClass'
 
 
-header1     = '/******************************************************************************\n'
-header2     = u'* 由ProtocolEditor工具自动生成'.encode('utf-8')
-header3     = u', 请勿手动修改'.encode('utf-8')
-header4     = '******************************************************************************/\n'
-
 tab         = '    '
 iters       = ['i', 'j', 'k', 'l', 'm', 'n']
 iterIdx     = 0
 tmpPath     = './tmp'
+fileCoding  = 'gb2312'
 
 CODE_TYPE_CPP = 1
 
@@ -38,7 +34,7 @@ import os
 import json
 import filecmp
 import re
-
+import codecs
 
 if not isIronPy:
     print('Test Mode')
@@ -54,7 +50,11 @@ else:
 
 
 print(jsonFile)
-fp = open(jsonFile, 'r')
+
+if not isIronPy:
+    fp = codecs.open(jsonFile, 'r', fileCoding)
+else:
+    fp = open(jsonFile, 'r')
 cfg = json.loads(fp.read())
 fp.close()
 
@@ -113,9 +113,36 @@ def Comment(t):
     if t['comment'] == '':
         return ''
     if not isIronPy:
-        return t['comment'].encode('utf-8')
+        return t['comment'].encode(fileCoding)
     return t['comment']
+
+def genMsgComment(fp, m, t):
+    line = 0
+    if m['comment'] != '':
+        line = 1
+        fp.write(t + '/* ' + Comment(m))
+
+    maxlen = 0
+    for v in m['vars']:
+        if v['comment'] != '' and len(v['name']) > maxlen:
+            maxlen = len(v['name'])
     
+    for v in m['vars']:
+        if v['comment'] != '':
+            if line == 0:
+                s = t + '/* ' + v['name']
+            else:
+                fp.write('\n')
+                s = t + ' * ' + v['name']
+            fp.write(s + '\t'.expandtabs(maxlen + len(t+' * ') + 4 - len(s)))
+            fp.write(Comment(v))
+            line += 1
+    if line > 0:
+        if line > 1:
+            fp.write('\n')
+            fp.write(t)
+        fp.write(' */\n')
+        
 def hasClass(m):
     for v in m['vars']:
         if v['isClass']:
@@ -163,11 +190,18 @@ def getCppClassNames():
     return l
 
 def genVarDeclare(fp, c):
+    maxlen = 0
+    for v in c['vars']:
+        if v['comment'] != '':
+            s = '    {0} {1};'.format(T(v), v['name'])
+            if len(s) > maxlen:
+                maxlen = len(s)
+    
     for v in c['vars']:
         s = '    {0} {1};'.format(T(v), v['name'])
         fp.write(s)
         if v['comment'] != '':
-            fp.write('\t'.expandtabs(40-len(s)))
+            fp.write('\t'.expandtabs(maxlen + 4 - len(s)))
             fp.write('//' + Comment(v))
         fp.write('\n')
 
@@ -203,6 +237,33 @@ def genClassDestruct(c):
 
 #-------------------------------------------------------------------------------
 #gen code : dispatcher
+
+def genDispatchH():
+    fp = open(os.path.join(output, dispatcher + '.h'), 'w')
+    fp.write('#ifndef _{0}_H_\n'
+             '#define _{0}_H_\n'
+             '\n'
+             '#include "NetHandlerBase.h"\n'
+             '\n'
+             'using namespace ssf2;\n'
+             '\n'
+             'class {1};\n'
+             'class {2} : public NetHandlerBase {{\n'
+             'public:\n'
+             '    {2}();\n'
+             '    virtual ~{2}();\n'
+             'private:\n'
+             '    void parseCmd(u16 cmdId, c8* data, u32 len) override;\n'
+             '\n'
+             '    {1}* parser;\n'
+             '}};\n'
+             '\n'
+             '#endif /* _{0}_H_ */'
+             .format(
+                 dispatcher.upper(),
+                 parser,
+                 dispatcher,))
+    fp.close()
 
 def genDispatchCode():
     s = ''
@@ -256,23 +317,6 @@ def genDispatchCpp():
 #-------------------------------------------------------------------------------
 #gen code: handler
 
-def genMsgComment(fp, m, t):
-    if m['comment'] != '':
-        fp.write(t + '/* ' + Comment(m))
-        hasVarComment = False
-        for v in m['vars']:
-            if v['comment'] != '':
-                if not hasVarComment:
-                    hasVarComment = True
-                    fp.write('\n')
-                s = t + ' * ' + v['name']
-                fp.write(s + '\t'.expandtabs(25-len(s)))
-                fp.write(Comment(v))
-                fp.write('\n')
-        if hasVarComment:
-            fp.write(t)
-        fp.write(' */\n')
-
 def genHandlerH():
     fp = open(os.path.join(output, handler + '.h'), 'w')
     fp.write('#ifndef _{0}_H_\n'
@@ -309,7 +353,7 @@ def editHandlerCpp(filepath, g):
     tfp = open(tmpPath, 'w')
 
     for line in fp.readlines():
-        regex = 'bool ' + handler + '::handler_\w+_(\w+)'
+        regex = 'bool ' + handler + '::handler_[^_]+_(\w+)'
         r = re.match(regex, line)
         if r:
             m = None
@@ -488,6 +532,8 @@ def genParserCpp():
                      ))
 
         for m in g['msgs']:
+            if m['type'] == 'CS':
+                continue
             fp.write('\n')
             fp.write('void {0}::parser_{1}_{2}(iobuf& buf) {{\n'
                      .format(
@@ -500,8 +546,8 @@ def genParserCpp():
                 lenDefined = False
                 genReaderVar(fp, v, v['type'], v['name'], v['isArray'], v['isClass'], v['arrLenType'], tab)
 
-            if len(m['vars']) > 0:
-                fp.write('\n')
+            #if len(m['vars']) > 0:
+            #    fp.write('\n')
 
             isHasClass = hasClass(m)
             if isHasClass:
@@ -662,7 +708,7 @@ def genSenderCpp():
             fp.write('\n')
             fp.write('void {0}::send_{1}_{2}({3}) {{\n'
                      '    iobuf buf;\n'
-                     '    buf.wirteInt16({4});\n'
+                     '    buf.writeInt16({4});\n'
                      .format(
                          sender,
                          g['name'],
@@ -680,7 +726,8 @@ def genSenderCpp():
 
 #-------------------------------------------------------------------------------
 #run
-        
+
+genDispatchH()
 genDispatchCpp()
 genHandlerH()
 genHandlerCpp()

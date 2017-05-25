@@ -228,7 +228,7 @@ namespace ProtocolEditor
             String configPath = Path.Combine(Properties.Settings.Default.configPath, "ProtocolEditor.Msg.json");
             if (File.Exists(configPath))
             {
-                byte[] jsonBytes = File.ReadAllBytes(configPath);
+                byte[] jsonBytes = Encoding.Convert(Encoding.GetEncoding("GB2312"), Encoding.UTF8, File.ReadAllBytes(configPath));
                 
                 using (MemoryStream ms = new MemoryStream(jsonBytes))
                 {
@@ -259,7 +259,7 @@ namespace ProtocolEditor
             string jsonStr = JsonConvert.SerializeObject(cfg, Formatting.Indented);
 
             String configPath = Path.Combine(Properties.Settings.Default.configPath, "ProtocolEditor.Msg.json");
-            File.WriteAllText(configPath, jsonStr);
+            File.WriteAllText(configPath, jsonStr, Encoding.GetEncoding("GB2312"));
         }
     }
 }
