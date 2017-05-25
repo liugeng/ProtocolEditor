@@ -161,9 +161,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="assemble.bat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

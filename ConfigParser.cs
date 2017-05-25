@@ -156,9 +156,6 @@ namespace ProtocolEditor
         }
 
         [IgnoreDataMember]
-        public object parent;
-
-        [IgnoreDataMember]
         public TreeViewItem item;
     }
 
@@ -174,7 +171,27 @@ namespace ProtocolEditor
         [DataMember(Order = 2)]
         public List<Msg> msgs = new List<Msg>();
 
-        [IgnoreDataMember]
+		[DataMember(Order = 3)]
+		public int codeType
+		{
+			get
+			{
+				if (_codeType == null)
+				{
+					_codeType = 0;
+				}
+				return (int)_codeType;
+			}
+			set
+			{
+				_codeType = value;
+			}
+		}
+
+		[IgnoreDataMember]
+		private int? _codeType;
+
+		[IgnoreDataMember]
         public TreeViewItem item;
 
         [IgnoreDataMember]

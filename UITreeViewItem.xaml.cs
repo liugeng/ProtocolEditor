@@ -21,6 +21,8 @@ namespace ProtocolEditor
 	public partial class UITreeViewItem : TreeViewItem
 	{
 		ItemType itemType;
+		const int CODE_TYPE_SCRIPT = 0;
+		const int CODE_TYPE_CPP = 1;
 
 		public UITreeViewItem(ItemType t)
 		{
@@ -30,6 +32,13 @@ namespace ProtocolEditor
 
 		public void contextMenu_Loaded(object sender, RoutedEventArgs e)
 		{
+			Group g = (Tag as TreeViewItemArg).data as Group;
+			if (g.codeType == CODE_TYPE_CPP)
+			{
+				contextMenu.Visibility = Visibility.Hidden;
+				return;
+			}
+
 			switch (itemType)
 			{
 				case ItemType.Group:
@@ -70,7 +79,15 @@ namespace ProtocolEditor
 				"	\"gentype\": \"group\","+
 				"	\"gname\":\"" + g.name + "\"" +
 				"}";
-			MainWindow.instance.genCode("ProtocolEditor.Client.py", "生成组成功: " + g.name, args);
+
+			if (g.codeType == CODE_TYPE_SCRIPT)
+			{
+				MainWindow.instance.genCode("ProtocolEditor.Client.Script.py", "生成组成功: " + g.name, args);
+			}
+			else
+			{
+				MainWindow.instance.genCode("ProtocolEditor.Client.Cpp.py", "生成组成功: " + g.name, args);
+			}
 		}
 
 		private void genDebug_Click(object sender, RoutedEventArgs e)
@@ -81,7 +98,10 @@ namespace ProtocolEditor
 				"	\"gentype\": \"debug\"," +
 				"	\"gname\":\"" + g.name + "\"" +
 				"}";
-			MainWindow.instance.genCode("ProtocolEditor.Client.py", "生成测试代码成功: Net_" + g.name + "_Debug.bolos", args);
+			if (g.codeType == CODE_TYPE_SCRIPT)
+			{
+				MainWindow.instance.genCode("ProtocolEditor.Client.Script.py", "生成测试代码成功: Net_" + g.name + "_Debug.bolos", args);
+			}
 		}
 
 		private void genMsg_Click(object sender, RoutedEventArgs e)
@@ -95,7 +115,10 @@ namespace ProtocolEditor
 				"	\"mtype\":\"" + m.type + "\"," +
 				"	\"gname\":\"" + g.name + "\"" +
 				"}";
-			MainWindow.instance.genCode("ProtocolEditor.Client.py", "生成单个协议成功: " + m.name, args);
+			if (g.codeType == CODE_TYPE_SCRIPT)
+			{
+				MainWindow.instance.genCode("ProtocolEditor.Client.Script.py", "生成单个协议成功: " + m.name, args);
+			}
 		}
 
 		private void genMsgWithDump_Click(object sender, RoutedEventArgs e)
@@ -109,7 +132,10 @@ namespace ProtocolEditor
 				"	\"mtype\":\"" + m.type + "\"," +
 				"	\"gname\":\"" + g.name + "\"" +
 				"}";
-			MainWindow.instance.genCode("ProtocolEditor.Client.py", "生成单个协议成功: " + m.name, args);
+			if (g.codeType == CODE_TYPE_SCRIPT)
+			{
+				MainWindow.instance.genCode("ProtocolEditor.Client.Script.py", "生成单个协议成功: " + m.name, args);
+			}
 		}
 	}
 }

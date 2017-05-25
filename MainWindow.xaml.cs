@@ -376,6 +376,7 @@ namespace ProtocolEditor
             nameLabel.Visibility = nameTextBox.Visibility;
             commentTextBox.Visibility = (typeId != ItemType.None ? Visibility.Visible : Visibility.Hidden);
             commentLabel.Visibility = commentTextBox.Visibility;
+			groupAttrPanel.Visibility = (typeId == ItemType.Group ? Visibility.Visible : Visibility.Hidden);
             msgAttrPanel.Visibility = (typeId == ItemType.Message ? Visibility.Visible : Visibility.Hidden);
             varAttrPanel.Visibility = (typeId == ItemType.Variable ? Visibility.Visible : Visibility.Hidden);
 			arrLenTypeComboBox.Visibility = ((typeId == ItemType.Variable) && ((item.Tag as TreeViewItemArg).data as Var).isArray) ? Visibility.Visible : Visibility.Hidden;
@@ -427,6 +428,7 @@ namespace ProtocolEditor
                         Group g = arg.data as Group;
                         nameTextBox.Text = g.name;
                         commentTextBox.Text = g.comment;
+						codeTypeComboBox.SelectedIndex = g.codeType;
                         break;
                     }
                 case ItemType.Message:
@@ -1024,7 +1026,10 @@ namespace ProtocolEditor
 					}
                     source.Execute(scope);
                     Console.ReadLine();
-                    MessageBox.Show(tips, "生成成功");
+					if (tips != "")
+					{
+						MessageBox.Show(tips, "生成成功");
+					}
                 }
                 catch (Exception ex)
                 {
@@ -1036,7 +1041,8 @@ namespace ProtocolEditor
 
         private void genClientCodeBtn_Click(object sender, RoutedEventArgs e)
         {
-            genCode("ProtocolEditor.Client.py", "客户端代码生成成功");
+			genCode("ProtocolEditor.Client.Cpp.py", "");
+			genCode("ProtocolEditor.Client.Script.py", "客户端代码生成成功");
         }
 
         private void genServerCodeBtn_Click(object sender, RoutedEventArgs e)
@@ -1332,7 +1338,20 @@ namespace ProtocolEditor
             changed();
         }
 
-        private void treeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		private void codeTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			if (refreshing)
+			{
+				return;
+			}
+
+			Group g = getSelectedData() as Group;
+			g.codeType = codeTypeComboBox.SelectedIndex;
+
+			changed();
+		}
+
+		private void treeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (e.OriginalSource is System.Windows.Controls.Grid)
             {
@@ -1547,5 +1566,6 @@ namespace ProtocolEditor
                 createTree();
             }
         }
+
 	}
 }
