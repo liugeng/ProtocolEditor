@@ -352,14 +352,19 @@ def editHandlerCpp(filepath, g):
     fp = open(filepath, 'r')
     tfp = open(tmpPath, 'w')
 
+    msgs = []
+    for m in g['msgs']:
+        msgs.append(m)
+
     for line in fp.readlines():
         regex = 'bool ' + handler + '::handler_[^_]+_(\w+)'
         r = re.match(regex, line)
         if r:
             m = None
-            for m1 in g['msgs']:
+            for m1 in msgs:
                 if m1['name'] == r.groups()[0] and m1['type'] == 'SC':
                     m = m1
+                    msgs.remove(m1)
                     break
             if m:
                 tfp.write('bool {0}::handler_{1}_{2}({3}) {{\n'
@@ -370,10 +375,28 @@ def editHandlerCpp(filepath, g):
                               genVarList(m)
                               ))
             else:
+                tfp.write('//"' + r.groups()[0] + '" is missing\n')
                 tfp.write(line)
         else:
-            tfp.write(line)
+            if not re.match('//"\w+" is missing', line):
+                tfp.write(line)
 
+    if len(msgs) > 0:
+        for m in msgs:
+            if m['type'] == 'CS':
+                continue
+            tfp.write('\n')
+            genMsgComment(tfp, m, '')
+            tfp.write('bool {0}::handler_{1}_{2}({3}) {{\n'
+                     .format(
+                         handler,
+                         g['name'],
+                         m['name'],
+                         genVarList(m)
+                         ))
+            tfp.write('    return true;\n')
+            tfp.write('}\n')
+    
     fp.close()
     tfp.close()
 
